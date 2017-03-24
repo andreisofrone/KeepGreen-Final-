@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+  <color name="my_blue">#002F67</color>
+  <color name="my_green">#77D065</color>
+  <color name="my_purple">#B455B6</color>
+  <color name="my_gray">#738182</color>
+  <color name="white">#FFFFFF</color>
+  <color name="my_grey">#808080</color>
+  <color name="my_orange">#F07F19</color>
+  <color name="my_black">#000000</color>
+  <color name="primary">#2196F3</color>
+  <color name="primaryDark">#1976D2</color>
+  <color name="accent">#FFC107</color>
+  <color name="window_background">#F5F5F5</color>
+  <color name="green">#00CC33</color>
+  <color name="spinner_base_color">#44000000</color>
+</resources>

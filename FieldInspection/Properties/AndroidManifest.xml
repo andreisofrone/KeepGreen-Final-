@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="KeepGreen.KeepGreen" android:versionCode="1" android:versionName="1.0">
+	<uses-sdk android:minSdkVersion="19" android:targetSdkVersion="23" />
+	<application android:label="KeepGreen"></application>
+	<application android:label="AppName" android:icon="@drawable/icon" android:theme="@style/MyTheme"></application>
+	<uses-sdk />
+	<uses-permission android:name="android.permission.CAMERA" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+</manifest>
