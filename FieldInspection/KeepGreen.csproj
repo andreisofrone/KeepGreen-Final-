@@ -102,6 +102,12 @@
     <Reference Include="Xamarin.Android.Support.Design">
       <HintPath>..\packages\Xamarin.Android.Support.Design.25.1.1\lib\MonoAndroid70\Xamarin.Android.Support.Design.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Controls.BarChart.Android">
+      <HintPath>..\Components\barchart-1.1.2.1\lib\android\Xamarin.Controls.BarChart.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.CardView">
+      <HintPath>..\packages\Xamarin.Android.Support.v7.CardView.25.1.1\lib\MonoAndroid70\Xamarin.Android.Support.v7.CardView.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiUitilities.cs" />
@@ -114,6 +120,10 @@
     <Compile Include="Fragments\InspectionFragment.cs" />
     <Compile Include="Fragments\DashboardFragment.cs" />
     <Compile Include="UI\LoginActivity.cs" />
+    <Compile Include="Fragments\PressureFragment.cs" />
+    <Compile Include="Fragments\HumidityFragment.cs" />
+    <Compile Include="Fragments\InspectionsFragment.cs" />
+    <Compile Include="PhotoAlbum.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -132,6 +142,52 @@
     <AndroidResource Include="Resources\values\Dimens.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable\Humidity.png" />
+    <AndroidResource Include="Resources\drawable\AtmPress.png" />
+    <AndroidResource Include="Resources\drawable\Temperature.png" />
+    <AndroidResource Include="Resources\layout\Details.axml" />
+    <AndroidResource Include="Resources\drawable\Add.png" />
+    <AndroidResource Include="Resources\drawable\Icon.png" />
+    <AndroidResource Include="Resources\layout\InspectionsLayout.axml" />
+    <AndroidResource Include="Resources\drawable\arc_de_triomphe.jpg" />
+    <AndroidResource Include="Resources\drawable\before_mobile_phones.jpg" />
+    <AndroidResource Include="Resources\drawable\big_ben_1.jpg" />
+    <AndroidResource Include="Resources\drawable\big_ben_2.jpg" />
+    <AndroidResource Include="Resources\drawable\buckingham_guards.jpg" />
+    <AndroidResource Include="Resources\drawable\champ_elysees.jpg" />
+    <AndroidResource Include="Resources\drawable\downtown_edinburgh.jpg" />
+    <AndroidResource Include="Resources\drawable\edinburgh_castle_1.jpg" />
+    <AndroidResource Include="Resources\drawable\edinburgh_castle_2.jpg" />
+    <AndroidResource Include="Resources\drawable\edinburgh_from_on_high.jpg" />
+    <AndroidResource Include="Resources\drawable\edinburgh_station.jpg" />
+    <AndroidResource Include="Resources\drawable\eurostar.jpg" />
+    <AndroidResource Include="Resources\drawable\heres_lookin_at_ya.jpg" />
+    <AndroidResource Include="Resources\drawable\inside_notre_dame.jpg" />
+    <AndroidResource Include="Resources\drawable\la_tour_eiffel.jpg" />
+    <AndroidResource Include="Resources\drawable\london_eye.jpg" />
+    <AndroidResource Include="Resources\drawable\louvre_1.jpg" />
+    <AndroidResource Include="Resources\drawable\louvre_2.jpg" />
+    <AndroidResource Include="Resources\drawable\medieval_siege_gun.jpg" />
+    <AndroidResource Include="Resources\drawable\modest_accomodations.jpg" />
+    <AndroidResource Include="Resources\drawable\museum_and_castle.jpg" />
+    <AndroidResource Include="Resources\drawable\notre_dame.jpg" />
+    <AndroidResource Include="Resources\drawable\old_meets_new.jpg" />
+    <AndroidResource Include="Resources\drawable\one_o_clock_gun.jpg" />
+    <AndroidResource Include="Resources\drawable\pompidou_centre.jpg" />
+    <AndroidResource Include="Resources\drawable\portcullis_gate.jpg" />
+    <AndroidResource Include="Resources\drawable\royal_mile.jpg" />
+    <AndroidResource Include="Resources\drawable\rue_cler.jpg" />
+    <AndroidResource Include="Resources\drawable\scott_monument.jpg" />
+    <AndroidResource Include="Resources\drawable\seine_barge.jpg" />
+    <AndroidResource Include="Resources\drawable\seine_river.jpg" />
+    <AndroidResource Include="Resources\drawable\to_notre_dame.jpg" />
+    <AndroidResource Include="Resources\drawable\tower_of_london.jpg" />
+    <AndroidResource Include="Resources\drawable\tower_visitors.jpg" />
+    <AndroidResource Include="Resources\drawable\versailles_fountains.jpg" />
+    <AndroidResource Include="Resources\drawable\versailles_gates.jpg" />
+    <AndroidResource Include="Resources\drawable\victoria_albert.jpg" />
+    <AndroidResource Include="Resources\drawable\view_from_holyrood_park.jpg" />
+    <AndroidResource Include="Resources\layout\CardLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -147,16 +203,12 @@
     <AndroidResource Include="Resources\drawable\ic_home_black_24dp.png" />
     <AndroidResource Include="Resources\drawable\ic_question_answer_black_24dp.png" />
     <AndroidResource Include="Resources\drawable\ic_supervisor_account_black_24dp.png" />
-    <AndroidResource Include="Resources\drawable\imgBg.png" />
     <AndroidResource Include="Resources\layout\app_bar.axml" />
     <AndroidResource Include="Resources\layout\headerdrawerlayout.axml" />
     <AndroidResource Include="Resources\drawable\GreenSplash.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
@@ -188,69 +240,10 @@
       <Version>2015.1.744</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\icon_07.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\icon_10.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\icon_45.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\icon_100.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\launcher.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\legenda.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\trailer.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\trailer0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\trailer1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\trailer3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\trailer5.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\trailer6.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\trailer7.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\trailer8.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\trailer10.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\trailer12.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\trailer13.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\trailer14.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\trailer50.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\cam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\clock.jpg" />
+    <XamarinComponentReference Include="barchart">
+      <Version>1.1.2.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\greenprogress.xml" />
@@ -275,4 +268,5 @@
   <Import Project="..\packages\Xamarin.Android.Support.Animated.Vector.Drawable.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.Animated.Vector.Drawable.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Animated.Vector.Drawable.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.Animated.Vector.Drawable.targets')" />
   <Import Project="..\packages\Xamarin.Android.Support.v7.AppCompat.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.v7.AppCompat.targets" Condition="Exists('..\packages\Xamarin.Android.Support.v7.AppCompat.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.v7.AppCompat.targets')" />
   <Import Project="..\packages\Xamarin.Android.Support.Design.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.Design.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Design.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.Design.targets')" />
+  <Import Project="..\packages\Xamarin.Android.Support.v7.CardView.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.v7.CardView.targets" Condition="Exists('..\packages\Xamarin.Android.Support.v7.CardView.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.v7.CardView.targets')" />
 </Project>

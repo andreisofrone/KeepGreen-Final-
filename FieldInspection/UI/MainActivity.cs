@@ -83,7 +83,7 @@ namespace FieldInspection
 				case (Resource.Id.nav_inspection):
 
 					var ftt = FragmentManager.BeginTransaction();
-					var inspp = new InspectionFragment();
+					var inspp = new InspectionsFragment();
 
 					ftt.AddToBackStack(null);
 					ftt.Replace(Resource.Id.HomeFrameLayout, inspp);

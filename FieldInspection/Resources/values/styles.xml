@@ -17,4 +17,11 @@
   	</style>  
   	<style name="MyTheme" parent="MyTheme.Base">
   	</style> 
+	  <style name="DetailsTheme" parent="android:Theme.Material.Light">
+    <item name="android:colorPrimary">@color/my_blue</item>
+    <item name="android:colorAccent">@color/my_purple</item>
+    <item name="android:windowBackground">@color/white</item>
+    <item name="android:textColorPrimary">@color/white</item>
+    <item name="android:navigationBarColor">@color/my_blue</item>
+</style>
 </resources>

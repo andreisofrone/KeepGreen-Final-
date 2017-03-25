@@ -31,6 +31,7 @@ namespace FieldInspection
 			// return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 			View view = inflater.Inflate(Resource.Layout.inspectionLayout, container, false);
 
+
 			return view;
 
 		}

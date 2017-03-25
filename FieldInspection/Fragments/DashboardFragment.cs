@@ -12,11 +12,7 @@ namespace FieldInspection
 	{
 
 		LinearLayout LayoutModelKm;
-		LinearLayout LayoutModelOrders;
-
-		PlotView plotViewModelOrders;
 		PlotView plotViewModelKm;
-
 		public PlotModel MyModelOrders { get; set; }
 		public PlotModel MyModelKm { get; set; }
 
@@ -25,7 +21,6 @@ namespace FieldInspection
 		{
 			base.OnCreate(savedInstanceState);
 
-			// Create your fragment here
 		}
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -41,6 +36,33 @@ namespace FieldInspection
 			base.OnStart();
 			SetKM();
             SetKM2();
+			SetBtns();
+
+		}
+
+		private void SetBtns() 
+		{ 
+			var pressBtn = Activity.FindViewById<Button>(Resource.Id.pressBtn);
+			pressBtn.Click += delegate
+			{
+				var ft = FragmentManager.BeginTransaction();
+				var detailsPres = new PressureFragment();
+				ft.AddToBackStack(null);
+				ft.Replace(Resource.Id.HomeFrameLayout, detailsPres);
+				ft.Commit();
+
+			};
+
+			var humBtn = Activity.FindViewById<Button>(Resource.Id.humBtn);
+			humBtn.Click += delegate
+			{
+				var ft = FragmentManager.BeginTransaction();
+				var humPres = new HumidityFragment();
+				ft.AddToBackStack(null);
+				ft.Replace(Resource.Id.HomeFrameLayout, humPres);
+				ft.Commit();
+
+			};
 
 		}
 
@@ -53,12 +75,12 @@ namespace FieldInspection
 			double percentageEmptyKmToday = (emptyKmToday / allKmToday) * 100;
 			double percentageFullKmToday = 100 - percentageEmptyKmToday;
 
-			double[] modelAllocValuesKm = new double[] { percentageFullKmToday, percentageEmptyKmToday };
-			string[] modelAllocationsKm = new string[] { string.Format(@"{0}", fullKmToday), string.Format(@"{0}", emptyKmToday) };
-			string[] colorss = new string[] { "#33CC00", "#FF3300" };
+			double[] modelAllocValuesKm = { percentageFullKmToday, percentageEmptyKmToday };
+			string[] modelAllocationsKm = { string.Format(@"{0}", fullKmToday), string.Format(@"{0}", emptyKmToday) };
+			string[] colorss = { "#33CC00", "#FF3300" };
 			int totall = 0;
 
-			plotViewModelKm = View.FindViewById<PlotView>(Resource.Id.plotViewModel2);
+			plotViewModelKm = View.FindViewById<PlotView>(Resource.Id.presiune);
 			LayoutModelKm = View.FindViewById<LinearLayout>(Resource.Id.linearLayoutModel);
 
 			//Model Allocation Pie char
@@ -71,9 +93,7 @@ namespace FieldInspection
 				pieSeries22.Slices.Add(new PieSlice(modelAllocationsKm[i], modelAllocValuesKm[i]) { Fill = OxyColor.Parse(colorss[i]) });
 				pieSeries22.OutsideLabelFormat = null;
 
-				double mValue = modelAllocValuesKm[i];
-				double percentValue = (mValue / totall) * 100;
-				string percent = percentValue.ToString("#.##");
+				double mValue = modelAllocValuesKm[i];double percentValue = (mValue / totall) * 100;
 
 				//Add horizontal layout for titles and colors of slices
 				LinearLayout hLayott = new LinearLayout(Activity);
@@ -111,10 +131,9 @@ namespace FieldInspection
 
             double[] modelAllocValuesKm = new double[] { percentageFullKmToday, percentageEmptyKmToday };
             string[] modelAllocationsKm = new string[] { string.Format(@"{0}", fullKmToday), string.Format(@"{0}", emptyKmToday) };
-            string[] colorss = new string[] { "#33CC00", "#FF3300" };
-            int totall = 0;
+            string[] colorss = new string[] { "#33CC00", "#FF3300" };         
 
-            plotViewModelKm = View.FindViewById<PlotView>(Resource.Id.plotViewModel1);
+			plotViewModelKm = View.FindViewById<PlotView>(Resource.Id.umiditate);
             LayoutModelKm = View.FindViewById<LinearLayout>(Resource.Id.linearLayoutModel);
 
             //Model Allocation Pie char
@@ -128,8 +147,6 @@ namespace FieldInspection
                 pieSeries22.OutsideLabelFormat = null;
 
                 double mValue = modelAllocValuesKm[i];
-                double percentValue = (mValue / totall) * 100;
-                string percent = percentValue.ToString("#.##");
 
                 //Add horizontal layout for titles and colors of slices
                 LinearLayout hLayott = new LinearLayout(Activity);

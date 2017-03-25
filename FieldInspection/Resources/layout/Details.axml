@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayoutModell"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <barchart.BarChartView
+        android:id="@+id/barChart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        bar_width="60"
+        bar_offset="30"
+        bar_color="#F07F19"
+        bar_caption_fontSize="24" />
+</LinearLayout>
