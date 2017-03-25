@@ -40,7 +40,6 @@ namespace FieldInspection
 			// Use this to return your custom view for this Fragment
 			// return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 			View view = inflater.Inflate(Resource.Layout.InspectionsLayout, container, false);
-			var rootView = inflater.Inflate(Resource.Layout.InspectionsLayout, container, false);
 
 			mPhotoAlbum = new PhotoAlbum();
 
@@ -48,13 +47,13 @@ namespace FieldInspection
 
 
 			// Get our RecyclerView layout:
-			mRecyclerView = rootView.FindViewById<RecyclerView>(Resource.Id.recyclerView);
+			mRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.recyclerView);
 
 			//............................................................
 			// Layout Manager Setup:
 
 			// Use the built-in linear layout manager:
-			mLayoutManager = new LinearLayoutManager(Activity);
+			mLayoutManager = new LinearLayoutManager(view.Context);
 
 			// Or use the built-in grid layout manager (two horizontal rows):
 			// mLayoutManager = new GridLayoutManager
@@ -80,7 +79,7 @@ namespace FieldInspection
 			// Random Pick Button:
 
 			// Get the button for randomly swapping a photo:
-			Button randomPickBtn = rootView.FindViewById<Button>(Resource.Id.randPickButton);
+			Button randomPickBtn = view.FindViewById<Button>(Resource.Id.randPickButton);
 
 			// Handler for the Random Pick Button:
 			randomPickBtn.Click += delegate
@@ -116,7 +115,9 @@ namespace FieldInspection
 
 			// Detect user clicks on the item view and report which item
 			// was clicked (by position) to the listener:
-			itemView.Click += (sender, e) => listener(base.Position);
+#pragma warning disable CS0618 // Type or member is obsolete
+			itemView.Click += (sender, e) => listener(Position);
+#pragma warning restore CS0618 // Type or member is obsolete
 		}
 	}
 
