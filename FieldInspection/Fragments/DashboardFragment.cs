@@ -40,7 +40,7 @@ namespace FieldInspection
 		{
 			base.OnStart();
 			SetKM();
-           // SetKM2();
+            SetKM2();
 
 		}
 
@@ -100,60 +100,60 @@ namespace FieldInspection
 
 		}
 
-        //private void SetKM2()
-        //{
-        //    double allKmToday = 50.0;
-        //    double emptyKmToday = 30.0;
+        private void SetKM2()
+        {
+            double allKmToday = 50.0;
+            double emptyKmToday = 30.0;
 
-        //    double fullKmToday = allKmToday - emptyKmToday;
-        //    double percentageEmptyKmToday = (emptyKmToday / allKmToday) * 100;
-        //    double percentageFullKmToday = 100 - percentageEmptyKmToday;
+            double fullKmToday = allKmToday - emptyKmToday;
+            double percentageEmptyKmToday = (emptyKmToday / allKmToday) * 100;
+            double percentageFullKmToday = 100 - percentageEmptyKmToday;
 
-        //    double[] modelAllocValuesKm = new double[] { percentageFullKmToday, percentageEmptyKmToday };
-        //    string[] modelAllocationsKm = new string[] { string.Format(@"{0}", fullKmToday), string.Format(@"{0}", emptyKmToday) };
-        //    string[] colorss = new string[] { "#33CC00", "#FF3300" };
-        //    int totall = 0;
+            double[] modelAllocValuesKm = new double[] { percentageFullKmToday, percentageEmptyKmToday };
+            string[] modelAllocationsKm = new string[] { string.Format(@"{0}", fullKmToday), string.Format(@"{0}", emptyKmToday) };
+            string[] colorss = new string[] { "#33CC00", "#FF3300" };
+            int totall = 0;
 
-        //    plotViewModelKm = View.FindViewById<PlotView>(Resource.Id.plotViewModel1);
-        //    LayoutModelKm = View.FindViewById<LinearLayout>(Resource.Id.linearLayoutModel);
+            plotViewModelKm = View.FindViewById<PlotView>(Resource.Id.plotViewModel1);
+            LayoutModelKm = View.FindViewById<LinearLayout>(Resource.Id.linearLayoutModel);
 
-        //    //Model Allocation Pie char
-        //    var plotModel22 = new PlotModel();
-        //    var pieSeries22 = new PieSeries();
+            //Model Allocation Pie char
+            var plotModel22 = new PlotModel();
+            var pieSeries22 = new PieSeries();
 
-        //    for (int i = 0; i < modelAllocationsKm.Length && i < modelAllocValuesKm.Length && i < colorss.Length; i++)
-        //    {
+            for (int i = 0; i < modelAllocationsKm.Length && i < modelAllocValuesKm.Length && i < colorss.Length; i++)
+            {
 
-        //        pieSeries22.Slices.Add(new PieSlice(modelAllocationsKm[i], modelAllocValuesKm[i]) { Fill = OxyColor.Parse(colorss[i]) });
-        //        pieSeries22.OutsideLabelFormat = null;
+                pieSeries22.Slices.Add(new PieSlice(modelAllocationsKm[i], modelAllocValuesKm[i]) { Fill = OxyColor.Parse(colorss[i]) });
+                pieSeries22.OutsideLabelFormat = null;
 
-        //        double mValue = modelAllocValuesKm[i];
-        //        double percentValue = (mValue / totall) * 100;
-        //        string percent = percentValue.ToString("#.##");
+                double mValue = modelAllocValuesKm[i];
+                double percentValue = (mValue / totall) * 100;
+                string percent = percentValue.ToString("#.##");
 
-        //        //Add horizontal layout for titles and colors of slices
-        //        LinearLayout hLayott = new LinearLayout(Activity);
-        //        hLayott.Orientation = Android.Widget.Orientation.Horizontal;
-        //        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-        //        hLayott.LayoutParameters = param;
+                //Add horizontal layout for titles and colors of slices
+                LinearLayout hLayott = new LinearLayout(Activity);
+                hLayott.Orientation = Android.Widget.Orientation.Horizontal;
+                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                hLayott.LayoutParameters = param;
 
-        //        //Add titles
-        //        TextView labell = new TextView(Activity);
-        //        labell.TextSize = 10;
-        //        labell.SetTextColor(Android.Graphics.Color.Black);
-        //        labell.Text = string.Join(" ", modelAllocationsKm[i]);
-        //        param.LeftMargin = 8;
-        //        labell.LayoutParameters = param;
+                //Add titles
+                TextView labell = new TextView(Activity);
+                labell.TextSize = 10;
+                labell.SetTextColor(Android.Graphics.Color.Black);
+                labell.Text = string.Join(" ", modelAllocationsKm[i]);
+                param.LeftMargin = 8;
+                labell.LayoutParameters = param;
 
 
-        //        LayoutModelKm.AddView(hLayott);
+                LayoutModelKm.AddView(hLayott);
 
-        //    }
+            }
 
-        //    plotModel22.Series.Add(pieSeries22);
-        //    MyModelKm = plotModel22;
-        //    plotViewModelKm.Model = MyModelKm;
+            plotModel22.Series.Add(pieSeries22);
+            MyModelKm = plotModel22;
+            plotViewModelKm.Model = MyModelKm;
 
-        //}
+        }
     }
 }
