@@ -14,4 +14,9 @@
   <color name="window_background">#F5F5F5</color>
   <color name="green">#00CC33</color>
   <color name="spinner_base_color">#44000000</color>
+  <color name="primary_button">#3498DB</color>
+  <color name="primary_pressed">#2C3E50</color>
+  <color name="ripple">#ff80ab</color>
+  <color name="accent">#E64A19</color>
+  <color name="accent_pressed">#BF360C</color>
 </resources>

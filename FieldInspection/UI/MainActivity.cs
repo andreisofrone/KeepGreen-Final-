@@ -96,17 +96,16 @@ namespace FieldInspection
 		}
 
 
-		//add custom icon to tolbar
-		public override bool OnCreateOptionsMenu(Android.Views.IMenu menu)
-		{
-			MenuInflater.Inflate(Resource.Menu.action_menu, menu);
-			if (menu != null)
-			{
-				menu.FindItem(Resource.Id.action_refresh).SetVisible(true);
-				menu.FindItem(Resource.Id.action_attach).SetVisible(false);
-			}
-			return base.OnCreateOptionsMenu(menu);
-		}
+		////add custom icon to tolbar
+		//public override bool OnCreateOptionsMenu(Android.Views.IMenu menu)
+		//{
+		//	MenuInflater.Inflate(Resource.Menu.action_menu, menu);
+		//	if (menu != null)
+		//	{
+		//		menu.FindItem(Resource.Id.action_refresh).SetVisible(true);
+		//	}
+		//	return base.OnCreateOptionsMenu(menu);
+		//}
 
 
 		//define action for tolbar icon press
@@ -116,9 +115,6 @@ namespace FieldInspection
 			{
 				case Android.Resource.Id.Home:
 					//this.Activity.Finish();
-					return true;
-				case Resource.Id.action_attach:
-					//FnAttachImage();
 					return true;
 				default:
 					return base.OnOptionsItemSelected(item);

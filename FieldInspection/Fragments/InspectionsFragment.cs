@@ -5,28 +5,21 @@ using Android.OS;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using com.refractored.fab;
 
 namespace FieldInspection
 {
-	public class InspectionsFragment : Fragment
+	public class InspectionsFragment : Fragment,IScrollDirectorListener
 	{
 		RecyclerView mRecyclerView;
-
-		// Layout manager that lays out each card in the RecyclerView:
 		RecyclerView.LayoutManager mLayoutManager;
-
-		// Adapter that accesses the data set (a photo album):
 		PhotoAlbumAdapter mAdapter;
-
-		// Photo album that is managed by the adapter:
 		PhotoAlbum mPhotoAlbum;
 
 		public override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
 
-
-			// Create your fragment here
 		}
 		void OnItemClick(object sender, int position)
 		{
@@ -39,65 +32,45 @@ namespace FieldInspection
 		{
 			// Use this to return your custom view for this Fragment
 			// return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-			View view = inflater.Inflate(Resource.Layout.InspectionsLayout, container, false);
+			var view = inflater.Inflate(Resource.Layout.InspectionsLayout, container, false);
 
 			mPhotoAlbum = new PhotoAlbum();
-
-			// Set our view from the "main" layout resource:
-
-
-			// Get our RecyclerView layout:
 			mRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.recyclerView);
-
-			//............................................................
-			// Layout Manager Setup:
-
-			// Use the built-in linear layout manager:
 			mLayoutManager = new LinearLayoutManager(view.Context);
+			mRecyclerView.HasFixedSize = true;
+			mRecyclerView.SetItemAnimator(new DefaultItemAnimator());
 
-			// Or use the built-in grid layout manager (two horizontal rows):
-			// mLayoutManager = new GridLayoutManager
-			//        (this, 2, GridLayoutManager.Horizontal, false);
-
-			// Plug the layout manager into the RecyclerView:
 			mRecyclerView.SetLayoutManager(mLayoutManager);
+			mRecyclerView.AddItemDecoration(new DividerItemDecoration(Activity, DividerItemDecoration.VerticalList));
 
-			//............................................................
-			// Adapter Setup:
-
-			// Create an adapter for the RecyclerView, and pass it the
-			// data set (the photo album) to manage:
 			mAdapter = new PhotoAlbumAdapter(mPhotoAlbum);
-
-			// Register the item click handler (below) with the adapter:
 			mAdapter.ItemClick += OnItemClick;
-
-			// Plug the adapter into the RecyclerView:
 			mRecyclerView.SetAdapter(mAdapter);
 
-			//............................................................
-			// Random Pick Button:
-
-			// Get the button for randomly swapping a photo:
-			Button randomPickBtn = view.FindViewById<Button>(Resource.Id.randPickButton);
-
-			// Handler for the Random Pick Button:
-			randomPickBtn.Click += delegate
+			var fab = view.FindViewById<FloatingActionButton>(Resource.Id.fab);
+			fab.AttachToRecyclerView(mRecyclerView, this);
+			fab.Size = FabSize.Mini;
+			fab.Click += (sender, args) =>
 			{
-				if (mPhotoAlbum != null)
-				{
-					// Randomly swap a photo with the top:
-					int idx = mPhotoAlbum.RandomSwap();
-
-					// Update the RecyclerView by notifying the adapter:
-					// Notify that the top and a randomly-chosen photo has changed (swapped):
-					mAdapter.NotifyItemChanged(0);
-					mAdapter.NotifyItemChanged(idx);
-				}
+				var ft = FragmentManager.BeginTransaction();
+				var addPres = new InspectionFragment();
+				ft.AddToBackStack(null);
+				ft.Replace(Resource.Id.HomeFrameLayout, addPres);
+				ft.Commit();
 			};
 
 			return view;
 
+		}
+
+		public void OnScrollDown()
+		{
+			Console.WriteLine("RecyclerViewFragment: OnScrollDown");
+		}
+
+		public void OnScrollUp()
+		{
+			Console.WriteLine("RecyclerViewFragment: OnScrollUp");
 		}
 	}
 	public class PhotoViewHolder : RecyclerView.ViewHolder
@@ -111,7 +84,7 @@ namespace FieldInspection
 		{
 			// Locate and cache view references:
 			Image = itemView.FindViewById<ImageView>(Resource.Id.cardImage);
-			Caption = itemView.FindViewById<TextView>(Resource.Id.cardText);
+			Caption = itemView.FindViewById<TextView>(Resource.Id.cardFieldName);
 
 			// Detect user clicks on the item view and report which item
 			// was clicked (by position) to the listener:

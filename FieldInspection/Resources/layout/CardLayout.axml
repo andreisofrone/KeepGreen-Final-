@@ -23,9 +23,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#333333"
                 android:text="Caption"
-                android:id="@+id/cardText"
+                android:id="@+id/cardFieldName"
+                android:textColor="@color/accent_pressed"
+                android:textSize="13dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="4dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Date: 22.03.15"
+                android:id="@+id/cardDate"
+                android:textColor="@color/accent_pressed"
+                android:textSize="13dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="4dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Auth: Andrei Gabriel"
+                android:id="@+id/cardAuth"
+                android:textSize="13dp"
+                android:textColor="@color/accent_pressed"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="4dp" />
         </LinearLayout>
