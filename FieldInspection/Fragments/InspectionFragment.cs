@@ -11,17 +11,17 @@ using Java.IO;
 
 namespace FieldInspection
 {
-
 	using Environment = Android.OS.Environment;
 	using Uri = Android.Net.Uri;
 
 	public class InspectionFragment : Fragment
 	{
 		private ImageView _imageView;
+
 		public override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
-			//StartInspection();
+
 			// Create your fragment here
 		}
 
@@ -63,12 +63,12 @@ namespace FieldInspection
 			GC.Collect();
 		}
 
-		public override void OnStart()
+		public override void OnActivityCreated(Bundle savedInstanceState)
 		{
-			base.OnStart();
+			base.OnActivityCreated(savedInstanceState);
 			StartInspection();
-
 		}
+
 
 		void StartInspection()
 		{
@@ -86,7 +86,7 @@ namespace FieldInspection
 			}
 		}
 
-		private void CreateDirectoryForPictures()
+		 void CreateDirectoryForPictures()
 		{
 			App._dir = new File(
 				Environment.GetExternalStoragePublicDirectory(
@@ -98,7 +98,7 @@ namespace FieldInspection
 		}
 
 
-		private void TakeAPicture(object sender, EventArgs eventArgs)
+		 void TakeAPicture(object sender, EventArgs eventArgs)
 		{
 			Intent intent = new Intent(MediaStore.ActionImageCapture);
 			App._file = new File(App._dir, String.Format("myPhoto_{0}.jpg", Guid.NewGuid()));
@@ -106,7 +106,7 @@ namespace FieldInspection
 			StartActivityForResult(intent, 0);
 		}
 
-		private bool IsThereAnAppToTakePictures()
+		 bool IsThereAnAppToTakePictures()
 		{
 			Intent intent = new Intent(MediaStore.ActionImageCapture);
 			IList<ResolveInfo> availableActivities = this.Activity

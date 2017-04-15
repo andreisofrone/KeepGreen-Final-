@@ -24,8 +24,14 @@ namespace FieldInspection
 		void OnItemClick(object sender, int position)
 		{
 			// Display a toast that briefly shows the enumeration of the selected photo:
-			int photoNum = position + 1;
-			Toast.MakeText(Activity, "This is photo number " + photoNum, ToastLength.Short).Show();
+			//int photoNum = position + 1;
+			//Toast.MakeText(Activity, "This is photo number " + photoNum, ToastLength.Short).Show();
+
+			var ft = FragmentManager.BeginTransaction();
+			var detailsPres = new InspectionViewFragment();
+			ft.AddToBackStack(null);
+			ft.Replace(Resource.Id.HomeFrameLayout, detailsPres);
+			ft.Commit();
 		}
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -73,7 +79,7 @@ namespace FieldInspection
 			Console.WriteLine("RecyclerViewFragment: OnScrollUp");
 		}
 	}
-	public class PhotoViewHolder : RecyclerView.ViewHolder
+	public class PhotoViewHolder :RecyclerView.ViewHolder
 	{
 		public ImageView Image { get; private set; }
 		public TextView Caption { get; private set; }
@@ -81,16 +87,17 @@ namespace FieldInspection
 		// Get references to the views defined in the CardView layout.
 		public PhotoViewHolder(View itemView, Action<int> listener)
 			: base(itemView)
-		{
+		{ 
 			// Locate and cache view references:
 			Image = itemView.FindViewById<ImageView>(Resource.Id.cardImage);
 			Caption = itemView.FindViewById<TextView>(Resource.Id.cardFieldName);
 
 			// Detect user clicks on the item view and report which item
 			// was clicked (by position) to the listener:
-#pragma warning disable CS0618 // Type or member is obsolete
+//#pragma warning disable CS0618 // Type or member is obsolete
 			itemView.Click += (sender, e) => listener(Position);
-#pragma warning restore CS0618 // Type or member is obsolete
+//#pragma warning restore CS0618 // Type or member is obsolete
+
 		}
 	}
 

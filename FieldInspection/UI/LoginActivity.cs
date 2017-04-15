@@ -11,7 +11,6 @@ namespace FieldInspection.UI
 		{
 			base.OnCreate(savedInstanceState);
 			SetContentView(Resource.Layout.LoginLayout);
-
 			var loginButton = FindViewById<Button>(Resource.Id.LoginButton);
 
 			loginButton.Click += delegate
