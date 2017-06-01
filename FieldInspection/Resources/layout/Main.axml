@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <include
-                layout="@layout/app_bar" />
+                layout="@layout/App_Bar" />
             <FrameLayout
                 android:id="@+id/HomeFrameLayout"
                 android:minWidth="25px"

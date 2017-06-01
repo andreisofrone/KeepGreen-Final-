@@ -18,7 +18,7 @@ namespace FieldInspection.UI
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.field_selection);
+            SetContentView(Resource.Layout.Field_Selection);
 
             var startBtn = FindViewById<Button>(Resource.Id.startBtn);
             startBtn.Click += BtnStart_Click;

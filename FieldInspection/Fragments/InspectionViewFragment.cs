@@ -2,12 +2,14 @@
 using Android.OS;
 using Android.Views;
 using Android.Gms.Maps;
+using Android.Gms.Maps.Model;
+using System;
 
 namespace FieldInspection
 {
 	public class InspectionViewFragment : Fragment,IOnMapReadyCallback
 	{
-		 GoogleMap mMap;
+		 GoogleMap GMap;
 
 		public override void OnCreate(Bundle savedInstanceState)
 		{
@@ -20,7 +22,7 @@ namespace FieldInspection
 		{
 			// Use this to return your custom view for this Fragment
 			// return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-			View view = inflater.Inflate(Resource.Layout.view_inspection, container, false);
+			View view = inflater.Inflate(Resource.Layout.View_Inspection, container, false);
 
 			SetUpMap();
 			return view;
@@ -29,7 +31,7 @@ namespace FieldInspection
 
 		void SetUpMap()
 		{
-			if (mMap == null)
+			if (GMap == null)
 			{
 				ChildFragmentManager.FindFragmentById<MapFragment>(Resource.Id.map).GetMapAsync(this);
 			}
@@ -37,7 +39,14 @@ namespace FieldInspection
 
 		public void OnMapReady(GoogleMap googleMap)
 		{
-			mMap = googleMap;
+			GMap = googleMap;
+			GMap.UiSettings.ZoomControlsEnabled = true;                                    LatLng latlng = new LatLng(Convert.ToDouble(45.190247), Convert.ToDouble(28.661764));
+			CameraUpdate camera = CameraUpdateFactory.NewLatLngZoom(latlng, 15);
+			GMap.MoveCamera(camera);               MarkerOptions options = new MarkerOptions()
+			.SetPosition(latlng)
+			.SetTitle("Chennai");
+
+			GMap.AddMarker(options);
 		}
 	}
 }

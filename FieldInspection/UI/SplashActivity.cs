@@ -12,7 +12,7 @@ namespace FieldInspection.UI
 		{
 
 			base.OnCreate(bundle);
-			SetContentView(Resource.Layout.SplashLayout);
+			SetContentView(Resource.Layout.Splash_Layout);
 			_timer = new System.Timers.Timer();
 			_timer.Interval = 2500;
 			_timer.Elapsed += t_Elapsed;

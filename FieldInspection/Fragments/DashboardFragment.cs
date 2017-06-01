@@ -27,7 +27,7 @@ namespace FieldInspection
 		{
 			// Use this to return your custom view for this Fragment
 			// return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-			View view = inflater.Inflate(Resource.Layout.dashboardLayout, container, false);
+			View view = inflater.Inflate(Resource.Layout.Dashboard_Layout, container, false);
 			return view;//base.OnCreateView (inflater.Inflate(Resource.Layout.homeLayout, container, savedInstanceState);
 		}
 

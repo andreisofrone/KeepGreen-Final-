@@ -10,7 +10,7 @@ namespace FieldInspection.UI
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
-			SetContentView(Resource.Layout.LoginLayout);
+			SetContentView(Resource.Layout.Login_Layout);
 			var loginButton = FindViewById<Button>(Resource.Id.LoginButton);
 
 			loginButton.Click += delegate

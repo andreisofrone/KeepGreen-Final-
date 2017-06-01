@@ -29,7 +29,7 @@ namespace FieldInspection
 			drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 
 			// Init toolbar
-			var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.app_bar);
+			var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.App_Bar);
 			SetSupportActionBar(toolbar);
 			SupportActionBar.SetTitle(Resource.String.app_name);
 			SupportActionBar.SetDisplayHomeAsUpEnabled(true);

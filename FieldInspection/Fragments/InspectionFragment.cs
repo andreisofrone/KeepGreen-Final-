@@ -29,7 +29,7 @@ namespace FieldInspection
 		{
 			// Use this to return your custom view for this Fragment
 			// return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-			View view = inflater.Inflate(Resource.Layout.inspectionLayout, container, false);
+			View view = inflater.Inflate(Resource.Layout.Inspection_Layout, container, false);
 
 
 			return view;
@@ -106,6 +106,7 @@ namespace FieldInspection
 			StartActivityForResult(intent, 0);
 		}
 
+		 
 		 bool IsThereAnAppToTakePictures()
 		{
 			Intent intent = new Intent(MediaStore.ActionImageCapture);
