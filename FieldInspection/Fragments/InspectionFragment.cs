@@ -16,51 +16,53 @@ namespace FieldInspection
 
 	public class InspectionFragment : Fragment
 	{
-		private ImageView _imageView;
+	    ImageView _imageView;
 
 		public override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
-
-			// Create your fragment here
 		}
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
-			// Use this to return your custom view for this Fragment
-			// return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 			View view = inflater.Inflate(Resource.Layout.Inspection_Layout, container, false);
-
-
 			return view;
-
 		}
 
 		public override void OnActivityResult(int requestCode, Result resultCode, Intent data)
 		{
 			base.OnActivityResult(requestCode, resultCode, data);
 
-			// Make it available in the gallery
-
 			Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
 			Uri contentUri = Uri.FromFile(App._file);
 			mediaScanIntent.SetData(contentUri);
 			Activity.SendBroadcast(mediaScanIntent);
 
-			// Display in ImageView. We will resize the bitmap to fit the display.
-			// Loading the full sized image will consume to much memory
-			// and cause the application to crash.
 
-			int height = Resources.DisplayMetrics.HeightPixels;
-			int width = _imageView.Height;
+			_imageView = View.FindViewById<ImageView>(Resource.Id.inspectionImage);
+
+			int height = _imageView.Height;
+			int width = _imageView.Width;
 			App.bitmap = App._file.Path.LoadAndResizeBitmap(width, height);
 			if (App.bitmap != null)
 			{
 				_imageView.SetImageBitmap(App.bitmap);
 				App.bitmap = null;
 			}
-			// Dispose of the Java side bitmap.
 			GC.Collect();
+			var sendInspection = View.FindViewById<Button>(Resource.Id.SendInspection);
+			var inspDescription = View.FindViewById<EditText>(Resource.Id.inspectionDescription);
+			var imagew = sendInspection;
+			var descriptionw = inspDescription.Text;
+			sendInspection.Click += (sender, args) =>
+			{
+				if (_imageView != null || inspDescription != null)
+				{
+					var image = sendInspection;
+					var description = inspDescription.Text;
+				}
+			};
+
 		}
 
 		public override void OnActivityCreated(Bundle savedInstanceState)
@@ -76,11 +78,10 @@ namespace FieldInspection
 			{
 				CreateDirectoryForPictures();
 
-				Button button =View.FindViewById<Button>(Resource.Id.myButton);
-				_imageView = View.FindViewById<ImageView>(Resource.Id.imageView1);
+				Button button =View.FindViewById<Button>(Resource.Id.takePicture);
+				_imageView = View.FindViewById<ImageView>(Resource.Id.inspectionImage);
 				if (button != null && _imageView != null)
 				{
-
 					button.Click += TakeAPicture;
 				}
 			}

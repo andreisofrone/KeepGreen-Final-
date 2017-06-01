@@ -14,10 +14,10 @@
             android:src="@android:drawable/ic_menu_gallery"
             android:layout_width="fill_parent"
             android:layout_height="200.0dp"
-            android:id="@+id/imageView1"
+            android:id="@+id/inspectionImage"
             android:adjustViewBounds="true" />
         <Button
-            android:id="@+id/myButton"
+            android:id="@+id/takePicture"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Capture"
@@ -31,11 +31,11 @@
             android:textColor="#ff0a0101"
             android:paddingTop="20dp" />
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/inspectionDescription"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
         <Button
-            android:id="@+id/SendButton"
+            android:id="@+id/SendInspection"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Send"

@@ -23,10 +23,6 @@ namespace FieldInspection
 		}
 		void OnItemClick(object sender, int position)
 		{
-			// Display a toast that briefly shows the enumeration of the selected photo:
-			//int photoNum = position + 1;
-			//Toast.MakeText(Activity, "This is photo number " + photoNum, ToastLength.Short).Show();
-
 			var ft = FragmentManager.BeginTransaction();
 			var detailsPres = new InspectionViewFragment();
 			ft.AddToBackStack(null);

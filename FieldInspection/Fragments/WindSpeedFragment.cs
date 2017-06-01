@@ -5,7 +5,7 @@ using BarChart;
 
 namespace FieldInspection
 {
-	public class HumidityFragment : Fragment
+	public class WindSpeedFragment : Fragment
 	{
 		public override void OnCreate(Bundle savedInstanceState)
 		{
@@ -23,7 +23,8 @@ namespace FieldInspection
 			base.OnStart();
 			var chart = new BarChartView(Activity);
 			chart = Activity.FindViewById<BarChartView>(Resource.Id.barChart);
-			PlotBars.PlotBarsChart(chart, 20, 70, 10, 10);
+			PlotBars.PlotBarsChart(chart, 10, 70, 90, 10);
 		}
+			
 	}
 }

@@ -6,22 +6,69 @@
     android:layout_height="fill_parent">
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:weightSum="1">
-        <oxyplot.xamarin.android.PlotView
-            android:layout_width="179.5dp"
-            android:layout_weight="0.3"
-            android:layout_height="120dp"
-            android:id="@+id/umiditate"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp" />
-        <oxyplot.xamarin.android.PlotView
-            android:layout_width="186.0dp"
-            android:layout_weight="0.4"
-            android:layout_height="120dp"
-            android:id="@+id/presiune"
-            android:layout_marginTop="10dp" />
+        android:weightSum="100">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50">
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:id="@+id/WindImage"
+                android:src="@drawable/Wind_Speed"
+                android:layout_gravity="center" />
+            <TextView
+                android:text="Wind speed:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/WindDir"
+                android:textSize="15dp"
+                android:textColor="@color/accent_pressed"
+                android:gravity="center" />
+            <TextView
+                android:text="70 km/h"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/WindSpeedVal"
+                android:textSize="15dp"
+                android:textColor="@color/accent_pressed"
+                android:gravity="center" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50">
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/humImage"
+                android:src="@drawable/Temperature"
+                android:layout_gravity="center_horizontal" />
+            <TextView
+                android:text="Temperature :"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TemperatureImage"
+                android:textSize="15dp"
+                android:textColor="@color/accent_pressed"
+                android:gravity="center" />
+            <TextView
+                android:text="20 degrees"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TempValue"
+                android:textSize="15dp"
+                android:textColor="@color/accent_pressed"
+                android:gravity="center" />
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
@@ -30,7 +77,7 @@
         android:weightSum="100">
         <Button
             android:text="Details"
-            android:id="@+id/button1"
+            android:id="@+id/WindSpeedBtn"
             android:textSize="12dp"
             android:shadowColor="@color/my_orange"
             android:backgroundTint="@color/green"
@@ -42,7 +89,7 @@
             android:background="@color/my_blue" />
         <Button
             android:text="Details"
-            android:id="@+id/button2"
+            android:id="@+id/TempBtn"
             android:textSize="12dp"
             android:drawableTop="#ff3f51b5"
             android:backgroundTint="@color/green"

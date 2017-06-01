@@ -48,7 +48,7 @@ namespace FieldInspection
 			//load default home screen
 			var ft = FragmentManager.BeginTransaction();
 
-			ft.AddToBackStack(null);
+			//ft.AddToBackStack(null);
 			ft.Add(Resource.Id.HomeFrameLayout, new DashboardFragment());
 			ft.Commit();
 
@@ -75,7 +75,7 @@ namespace FieldInspection
 
 					var ft = FragmentManager.BeginTransaction();
 					var home = new DashboardFragment();
-					ft.AddToBackStack(null);
+					//ft.AddToBackStack(null);
 					ft.Replace(Resource.Id.HomeFrameLayout, home);
 					ft.Commit();
 					break;
@@ -84,8 +84,7 @@ namespace FieldInspection
 
 					var ftt = FragmentManager.BeginTransaction();
 					var inspp = new InspectionsFragment();
-
-					ftt.AddToBackStack(null);
+					//ftt.AddToBackStack(null);
 					ftt.Replace(Resource.Id.HomeFrameLayout, inspp);
 					ftt.Commit();
 					break;

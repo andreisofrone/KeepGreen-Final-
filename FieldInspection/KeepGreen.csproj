@@ -11,7 +11,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FieldInspection</RootNamespace>
-    <AssemblyName>FieldInspection</AssemblyName>
+    <AssemblyName>KeepGreen</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidApplication>true</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
@@ -149,6 +149,9 @@
     <Compile Include="PhotoAlbum.cs" />
     <Compile Include="DividerItemDecoration.cs" />
     <Compile Include="Fragments\InspectionViewFragment.cs" />
+    <Compile Include="PlotBars.cs" />
+    <Compile Include="Fragments\WindSpeedFragment.cs" />
+    <Compile Include="Fragments\TemperatureFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -224,6 +227,8 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_add_white_24dp.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable\Compass.png" />
+    <AndroidResource Include="Resources\drawable\Wind_Speed.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
