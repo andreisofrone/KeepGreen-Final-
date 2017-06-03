@@ -20,6 +20,8 @@ namespace FieldInspection.UI
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Field_Selection);
 
+			var cultures = ApiUitilities.FetchWeatherAsync(ApiUitilities.exApiUrl);
+
             var startBtn = FindViewById<Button>(Resource.Id.startBtn);
             startBtn.Click += BtnStart_Click;
 

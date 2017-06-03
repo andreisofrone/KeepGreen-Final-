@@ -6,9 +6,11 @@ using System.IO;
 
 namespace FieldInspection
 {
-    class ApiUitilities
+    static class ApiUitilities
     {
-        private async Task<JsonValue> FetchWeatherAsync(string url)
+		public static string exApiUrl= "104.155.154.190/api/Cultures/Inspections/1";
+
+		public static async Task<JsonValue> FetchWeatherAsync(string url)
         {
             // Create an HTTP web request using the URL:
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(new Uri(url));
@@ -30,7 +32,7 @@ namespace FieldInspection
                 }
             }
         }
-        private void ParseAndDisplay(JsonValue json)
+		public static void ParseAndDisplay(JsonValue json)
         {
             // Get the weather reporting fields from the layout resource:
             var location = "";
