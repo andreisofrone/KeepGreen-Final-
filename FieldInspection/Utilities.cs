@@ -1,11 +1,6 @@
 ﻿using Android.App;
 using Android.Graphics;
-//using Android.Media;
 using System.IO;
-using  System.Drawing;
-using System.Net.Mime;
-using Android.Widget;
-using Java.Nio;
 
 namespace FieldInspection
 {
@@ -31,13 +26,15 @@ namespace FieldInspection
 
         public static Bitmap ConvertToBitmap(byte[] imageSource)
         {
-            //Bitmap bmp = Bitmap.CreateBitmap(100, 300, Bitmap.Config.Rgb565);
-            //ByteBuffer buffer = ByteBuffer.Wrap(imageSource);
-            //bmp.CopyPixelsFromBuffer(buffer);
-            //return bmp;
             Bitmap bmp = BitmapFactory.DecodeByteArray(imageSource, 0, imageSource.Length);
-
             return bmp;
+        }
+
+        public static Bitmap BitmapResizer(Bitmap bitmap)
+        {
+            var bitmapScalled = Bitmap.CreateScaledBitmap(bitmap, 300, 200, true);
+            bitmap.Recycle();
+            return bitmapScalled;
         }
     }
 }

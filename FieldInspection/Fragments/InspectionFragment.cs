@@ -46,7 +46,7 @@ namespace FieldInspection
 
 			var height = _imageView.Height;
 			var width = _imageView.Width;
-			App.bitmap = App._file.Path.LoadAndResizeBitmap(width, height);
+			App.bitmap = App._file.Path.LoadAndResizeBitmap(300, 200);
 			if (App.bitmap != null)
 			{
 				_imageView.SetImageBitmap(App.bitmap);			
@@ -71,7 +71,7 @@ namespace FieldInspection
                     newInsp.LocationLatitude = Position.Latitude;
                     newInsp.LocationLongitude = Position.Longitude;
                     newInsp.Date = DateTime.Now;
-                    newInsp.Image = Utilities.ConvertBitmapToByte(App.bitmap);
+                    newInsp.Image = Utilities.ConvertBitmapToByte(Utilities.BitmapResizer(App.bitmap));
                     await SaveTodoItemAsync(newInsp, true);
                     App.bitmap = null;
 

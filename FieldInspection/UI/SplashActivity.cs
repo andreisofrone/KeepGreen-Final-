@@ -14,7 +14,7 @@ namespace FieldInspection.UI
 			base.OnCreate(bundle);
 			SetContentView(Resource.Layout.Splash_Layout);
 			_timer = new System.Timers.Timer();
-			_timer.Interval = 2500;
+			_timer.Interval = 3500;
 			_timer.Elapsed += t_Elapsed;
 			_timer.Start();
 		}
@@ -22,7 +22,7 @@ namespace FieldInspection.UI
 		private void t_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{
 			_timer.Stop();
-			StartActivity(typeof(LoginActivity));
+			StartActivity(typeof(FieldSelection));
 			Finish();
 		}
 	}

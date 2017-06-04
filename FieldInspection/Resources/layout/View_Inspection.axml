@@ -12,8 +12,8 @@
         android:orientation="vertical">
         <ImageView
             android:src="@drawable/big_ben_1"
-            android:layout_width="fill_parent"
-            android:layout_height="150.0dp"
+            android:layout_width="match_parent"
+            android:layout_height="200.0dp"
             android:id="@+id/inspImView"
             android:adjustViewBounds="true" />
         <TextView

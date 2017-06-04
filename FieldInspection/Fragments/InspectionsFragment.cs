@@ -120,6 +120,8 @@ namespace FieldInspection
         public Culture SelectedCulture { get; set; }
         // Event handler for item clicks:
         public event EventHandler<int> ItemClick;
+        
+        public Inspection[] Inspections { get; set; }
 
         // Underlying data set (a photo album):
         public PhotoAlbum mPhotoAlbum;
@@ -129,6 +131,12 @@ namespace FieldInspection
         {
             mPhotoAlbum = photoAlbum;
             SelectedCulture = culture;
+            Inspections = ApiUitilities.GetInspections(SelectedCulture).ToArray();
+        }
+
+        public override void OnAttachedToRecyclerView(RecyclerView recyclerView)
+        {
+            base.OnAttachedToRecyclerView(recyclerView);
         }
 
         // Create a new photo CardView (invoked by the layout manager): 
@@ -141,6 +149,7 @@ namespace FieldInspection
             // Create a ViewHolder to find and hold these view references, and 
             // register OnClick with the view holder:
             PhotoViewHolder vh = new PhotoViewHolder(itemView, OnClick);
+          
             return vh;
         }
 
@@ -148,7 +157,7 @@ namespace FieldInspection
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             PhotoViewHolder vh = holder as PhotoViewHolder;
-            var inspections =ApiUitilities.GetInspections(SelectedCulture).ToArray();
+            
 
 
             // Set the ImageView and TextView in this ViewHolder's CardView 
@@ -157,10 +166,10 @@ namespace FieldInspection
             //vh.Caption.Text = mPhotoAlbum[position].Caption;
 
             //vh.Image.SetImageResource(mPhotoAlbum[position].PhotoID);
-            if (inspections.Length > 0)
+            if (Inspections.Length > 0)
             {
-                vh.Image.SetImageBitmap(Utilities.ConvertToBitmap(inspections[position].Image));
-                vh.Caption.Text = inspections[position].Name;
+                vh.Image.SetImageBitmap(Utilities.ConvertToBitmap(Inspections[position].Image));
+                vh.Caption.Text = Inspections[position].Name;
             }
 
         }
@@ -168,7 +177,7 @@ namespace FieldInspection
         // Return the number of photos available in the photo album:
         public override int ItemCount
         {
-            get { return mPhotoAlbum.NumPhotos; }
+            get { return Inspections.Length; }
         }
 
         // Raise an event when the item-click takes place:
