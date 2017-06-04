@@ -1,158 +1,182 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using Android.App;
+using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using com.refractored.fab;
+using Newtonsoft.Json;
 
 namespace FieldInspection
 {
-	public class InspectionsFragment : Fragment,IScrollDirectorListener
-	{
-		RecyclerView mRecyclerView;
-		RecyclerView.LayoutManager mLayoutManager;
-		PhotoAlbumAdapter mAdapter;
-		PhotoAlbum mPhotoAlbum;
+    public class InspectionsFragment : Fragment, IScrollDirectorListener
+    {
+        public Culture SelectedCulture { get; set; }
 
-		public override void OnCreate(Bundle savedInstanceState)
-		{
-			base.OnCreate(savedInstanceState);
+        RecyclerView mRecyclerView;
+        RecyclerView.LayoutManager mLayoutManager;
+        PhotoAlbumAdapter mAdapter;
+        PhotoAlbum mPhotoAlbum;
 
-		}
-		void OnItemClick(object sender, int position)
-		{
-			var ft = FragmentManager.BeginTransaction();
-			var detailsPres = new InspectionViewFragment();
-			ft.AddToBackStack(null);
-			ft.Replace(Resource.Id.HomeFrameLayout, detailsPres);
-			ft.Commit();
-		}
+        public override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
 
-		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-		{
-			// Use this to return your custom view for this Fragment
-			// return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-			var view = inflater.Inflate(Resource.Layout.Inspections_Layout, container, false);
+        }
+        void OnItemClick(object sender, int position)
+        {
+            var inspections = ApiUitilities.GetInspections(SelectedCulture).ToArray();
+            var ft = FragmentManager.BeginTransaction();
+            var inspecView = new InspectionViewFragment();
+            ft.AddToBackStack(null);
+            ft.Replace(Resource.Id.HomeFrameLayout, inspecView);
+            ft.Commit();
+            inspecView.Inspection = inspections[position];
 
-			mPhotoAlbum = new PhotoAlbum();
-			mRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.recyclerView);
-			mLayoutManager = new LinearLayoutManager(view.Context);
-			mRecyclerView.HasFixedSize = true;
-			mRecyclerView.SetItemAnimator(new DefaultItemAnimator());
 
-			mRecyclerView.SetLayoutManager(mLayoutManager);
-			mRecyclerView.AddItemDecoration(new DividerItemDecoration(Activity, DividerItemDecoration.VerticalList));
+        }
 
-			mAdapter = new PhotoAlbumAdapter(mPhotoAlbum);
-			mAdapter.ItemClick += OnItemClick;
-			mRecyclerView.SetAdapter(mAdapter);
+        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        {
+            // Use this to return your custom view for this Fragment
+            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
+            var view = inflater.Inflate(Resource.Layout.Inspections_Layout, container, false);
+            SelectedCulture = JsonConvert.DeserializeObject<Culture>(this.Activity.Intent.GetStringExtra("key"));
+            mPhotoAlbum = new PhotoAlbum();
+            mRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.recyclerView);
+            mLayoutManager = new LinearLayoutManager(view.Context);
+            mRecyclerView.HasFixedSize = true;
+            mRecyclerView.SetItemAnimator(new DefaultItemAnimator());
 
-			var fab = view.FindViewById<FloatingActionButton>(Resource.Id.fab);
-			fab.AttachToRecyclerView(mRecyclerView, this);
-			fab.Size = FabSize.Mini;
-			fab.Click += (sender, args) =>
-			{
-				var ft = FragmentManager.BeginTransaction();
-				var addPres = new InspectionFragment();
-				ft.AddToBackStack(null);
-				ft.Replace(Resource.Id.HomeFrameLayout, addPres);
-				ft.Commit();
-			};
+            mRecyclerView.SetLayoutManager(mLayoutManager);
+            mRecyclerView.AddItemDecoration(new DividerItemDecoration(Activity, DividerItemDecoration.VerticalList));
 
-			return view;
+            mAdapter = new PhotoAlbumAdapter(mPhotoAlbum,SelectedCulture);
+            mAdapter.ItemClick += OnItemClick;
+            mRecyclerView.SetAdapter(mAdapter);
 
-		}
+            
 
-		public void OnScrollDown()
-		{
-			Console.WriteLine("RecyclerViewFragment: OnScrollDown");
-		}
+            var fab = view.FindViewById<FloatingActionButton>(Resource.Id.fab);
+            fab.AttachToRecyclerView(mRecyclerView, this);
+            fab.Size = FabSize.Mini;
+            fab.Click += (sender, args) =>
+            {
+                var ft = FragmentManager.BeginTransaction();
+                var addPres = new InspectionFragment();
+                ft.AddToBackStack(null);
+                ft.Replace(Resource.Id.HomeFrameLayout, addPres);
+                ft.Commit();
+            };
 
-		public void OnScrollUp()
-		{
-			Console.WriteLine("RecyclerViewFragment: OnScrollUp");
-		}
-	}
-	public class PhotoViewHolder :RecyclerView.ViewHolder
-	{
-		public ImageView Image { get; private set; }
-		public TextView Caption { get; private set; }
+            return view;
 
-		// Get references to the views defined in the CardView layout.
-		public PhotoViewHolder(View itemView, Action<int> listener)
-			: base(itemView)
-		{ 
-			// Locate and cache view references:
-			Image = itemView.FindViewById<ImageView>(Resource.Id.cardImage);
-			Caption = itemView.FindViewById<TextView>(Resource.Id.cardFieldName);
+        }
 
-			// Detect user clicks on the item view and report which item
-			// was clicked (by position) to the listener:
-//#pragma warning disable CS0618 // Type or member is obsolete
-			itemView.Click += (sender, e) => listener(Position);
-//#pragma warning restore CS0618 // Type or member is obsolete
+        public void OnScrollDown()
+        {
+            Console.WriteLine("RecyclerViewFragment: OnScrollDown");
+        }
 
-		}
-	}
+        public void OnScrollUp()
+        {
+            Console.WriteLine("RecyclerViewFragment: OnScrollUp");
+        }
+    }
+    public class PhotoViewHolder : RecyclerView.ViewHolder
+    {
+        public ImageView Image { get; private set; }
+        public TextView Caption { get; private set; }
 
-	//----------------------------------------------------------------------
-	// ADAPTER
+        // Get references to the views defined in the CardView layout.
+        public PhotoViewHolder(View itemView, Action<int> listener)
+            : base(itemView)
+        {
+            // Locate and cache view references:
+            Image = itemView.FindViewById<ImageView>(Resource.Id.cardImage);
+            Caption = itemView.FindViewById<TextView>(Resource.Id.cardFieldName);
 
-	// Adapter to connect the data set (photo album) to the RecyclerView: 
-	public class PhotoAlbumAdapter : RecyclerView.Adapter
-	{
-		// Event handler for item clicks:
-		public event EventHandler<int> ItemClick;
+            // Detect user clicks on the item view and report which item
+            // was clicked (by position) to the listener:
+            //#pragma warning disable CS0618 // Type or member is obsolete
+            itemView.Click += (sender, e) => listener(Position);
+            //#pragma warning restore CS0618 // Type or member is obsolete
 
-		// Underlying data set (a photo album):
-		public PhotoAlbum mPhotoAlbum;
+        }
+    }
 
-		// Load the adapter with the data set (photo album) at construction time:
-		public PhotoAlbumAdapter(PhotoAlbum photoAlbum)
-		{
-			mPhotoAlbum = photoAlbum;
-		}
+    //----------------------------------------------------------------------
+    // ADAPTER
 
-		// Create a new photo CardView (invoked by the layout manager): 
-		public override RecyclerView.ViewHolder
-			OnCreateViewHolder(ViewGroup parent, int viewType)
-		{
-			// Inflate the CardView for the photo:
-			View itemView = LayoutInflater.From(parent.Context).
-			                              Inflate(Resource.Layout.Card_Layout, parent, false);
+    // Adapter to connect the data set (photo album) to the RecyclerView: 
+    public class PhotoAlbumAdapter : RecyclerView.Adapter
+    {
+        public Culture SelectedCulture { get; set; }
+        // Event handler for item clicks:
+        public event EventHandler<int> ItemClick;
 
-			// Create a ViewHolder to find and hold these view references, and 
-			// register OnClick with the view holder:
-			PhotoViewHolder vh = new PhotoViewHolder(itemView, OnClick);
-			return vh;
-		}
+        // Underlying data set (a photo album):
+        public PhotoAlbum mPhotoAlbum;
 
-		// Fill in the contents of the photo card (invoked by the layout manager):
-		public override void
-			OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
-		{
-			PhotoViewHolder vh = holder as PhotoViewHolder;
+        // Load the adapter with the data set (photo album) at construction time:
+        public PhotoAlbumAdapter(PhotoAlbum photoAlbum,Culture culture)
+        {
+            mPhotoAlbum = photoAlbum;
+            SelectedCulture = culture;
+        }
 
-			// Set the ImageView and TextView in this ViewHolder's CardView 
-			// from this position in the photo album:
-			vh.Image.SetImageResource(mPhotoAlbum[position].PhotoID);
-			vh.Caption.Text = mPhotoAlbum[position].Caption;
-		}
+        // Create a new photo CardView (invoked by the layout manager): 
+        public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
+        {
+            // Inflate the CardView for the photo:
+            View itemView = LayoutInflater.From(parent.Context).
+                                          Inflate(Resource.Layout.Card_Layout, parent, false);
 
-		// Return the number of photos available in the photo album:
-		public override int ItemCount
-		{
-			get { return mPhotoAlbum.NumPhotos; }
-		}
+            // Create a ViewHolder to find and hold these view references, and 
+            // register OnClick with the view holder:
+            PhotoViewHolder vh = new PhotoViewHolder(itemView, OnClick);
+            return vh;
+        }
 
-		// Raise an event when the item-click takes place:
-		void OnClick(int position)
-		{
-			if (ItemClick != null)
-				ItemClick(this, position);
-		}
-	}
+        // Fill in the contents of the photo card (invoked by the layout manager):
+        public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+        {
+            PhotoViewHolder vh = holder as PhotoViewHolder;
+            var inspections =ApiUitilities.GetInspections(SelectedCulture).ToArray();
+
+
+            // Set the ImageView and TextView in this ViewHolder's CardView 
+            // from this position in the photo album:
+            //vh.Image.SetImageResource(mPhotoAlbum[position].PhotoID);
+            //vh.Caption.Text = mPhotoAlbum[position].Caption;
+
+            //vh.Image.SetImageResource(mPhotoAlbum[position].PhotoID);
+            if (inspections.Length > 0)
+            {
+                vh.Image.SetImageBitmap(Utilities.ConvertToBitmap(inspections[position].Image));
+                vh.Caption.Text = inspections[position].Name;
+            }
+
+        }
+
+        // Return the number of photos available in the photo album:
+        public override int ItemCount
+        {
+            get { return mPhotoAlbum.NumPhotos; }
+        }
+
+        // Raise an event when the item-click takes place:
+        void OnClick(int position)
+        {
+            if (ItemClick != null)
+                ItemClick(this, position);
+        }
+    }
 }
 

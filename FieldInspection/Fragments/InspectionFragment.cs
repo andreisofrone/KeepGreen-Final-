@@ -5,28 +5,32 @@ using Android.OS;
 using Android.Provider;
 using Android.Views;
 using Android.Widget;
+using Newtonsoft.Json;
+using Plugin.Geolocator;
+using Plugin.Geolocator.Abstractions;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FieldInspection
 {
-	using Environment = Android.OS.Environment;
-	using Uri = Android.Net.Uri;
+    using Environment = Android.OS.Environment;
+    using Uri = Android.Net.Uri;
 
-	public class InspectionFragment : Fragment
-	{
-		ImageView _imageView;
+    public class InspectionFragment : Fragment
+    {
+        private  HttpClient client = new HttpClient();
+        public Culture SelectedCulture { get; set; }
+        private Position Position { get; set; }
+        ImageView _imageView;
 
-		public override void OnCreate(Bundle savedInstanceState)
-		{
-			base.OnCreate(savedInstanceState);
-		}
-
-		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			View view = inflater.Inflate(Resource.Layout.Inspection_Layout, container, false);
-			return view;
+		    SelectedCulture = JsonConvert.DeserializeObject<Culture>(Activity.Intent.GetStringExtra("key"));
+            return view;
 		}
 
 		public override void OnActivityResult(int requestCode, Result resultCode, Intent data)
@@ -45,29 +49,66 @@ namespace FieldInspection
 			App.bitmap = App._file.Path.LoadAndResizeBitmap(width, height);
 			if (App.bitmap != null)
 			{
-				_imageView.SetImageBitmap(App.bitmap);
-				var stream = new MemoryStream();
-				App.bitmap.Compress(Android.Graphics.Bitmap.CompressFormat.Png, 0, stream);
-				byte[] bitmapData = stream.ToArray();
-				App.bitmap = null;
+				_imageView.SetImageBitmap(App.bitmap);			
 			}
-			var a = App.bitmap;
 
 			GC.Collect();
-			var sendInspection = View.FindViewById<Button>(Resource.Id.SendInspection);
-			var inspDescription = View.FindViewById<EditText>(Resource.Id.inspectionDescription);
-			var imagew = sendInspection;
-			var descriptionw = inspDescription.Text;
-			sendInspection.Click += (sender, args) =>
-			{
-				if (_imageView != null || inspDescription != null)
-				{
-					var image = sendInspection;
-					var description = inspDescription.Text;
-				}
-			};
 
-		}
+		    var sendInspection = View.FindViewById<Button>(Resource.Id.SendInspection);
+		    var inspDescription = View.FindViewById<EditText>(Resource.Id.inspectionDescription);
+
+            sendInspection.Click += async (sender, args) =>
+            {
+                if (_imageView != null && inspDescription.Text != null)
+                {
+                    var newInsp = new Inspection();
+
+                    newInsp.Name = "Testing";
+                    newInsp.Description = inspDescription.Text;
+                    newInsp.CultureID = SelectedCulture.ID;
+                    newInsp.AuthorID = 1;
+                    await GetLocationAsync();
+                    newInsp.LocationLatitude = Position.Latitude;
+                    newInsp.LocationLongitude = Position.Longitude;
+                    newInsp.Date = DateTime.Now;
+                    newInsp.Image = Utilities.ConvertBitmapToByte(App.bitmap);
+                    await SaveTodoItemAsync(newInsp, true);
+                    App.bitmap = null;
+
+                    var ft = FragmentManager.BeginTransaction();
+                    var inspections = new InspectionsFragment();
+                    ft.AddToBackStack(null);
+                    ft.Replace(Resource.Id.HomeFrameLayout, inspections);
+                    ft.Commit();
+                   
+                }
+            };
+
+        }
+
+        private async Task GetLocationAsync()
+        {
+            var locator = CrossGeolocator.Current;
+            locator.DesiredAccuracy = 100; //100 is new default
+            var position = await locator.GetPositionAsync(timeoutMilliseconds: 10000);
+            Position = position;
+        }
+        
+
+        public async Task SaveTodoItemAsync(Inspection inspection, bool isNewItem = false)
+        {
+            var uri = new System.Uri("http://104.155.154.190/api/Inspections");
+
+            var json = JsonConvert.SerializeObject(inspection);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = null;
+            if (isNewItem)
+            {
+                response = await client.PostAsync(uri, content);
+            }
+      }
+     
 
 		public override void OnActivityCreated(Bundle savedInstanceState)
 		{

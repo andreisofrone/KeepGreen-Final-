@@ -17,7 +17,7 @@
             android:id="@+id/inspImView"
             android:adjustViewBounds="true" />
         <TextView
-            android:id="@+id/inspName"
+            android:id="@+id/inspDescrip"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Descriere : Exceptional"

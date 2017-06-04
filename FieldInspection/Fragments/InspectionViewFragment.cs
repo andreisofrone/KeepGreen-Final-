@@ -1,35 +1,43 @@
 ﻿using Android.App;
-using Android.OS;
-using Android.Views;
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
-using System;
+using Android.OS;
+using Android.Views;
+using Android.Widget;
 
 namespace FieldInspection
 {
-	public class InspectionViewFragment : Fragment,IOnMapReadyCallback
+    public class InspectionViewFragment : Fragment,IOnMapReadyCallback
 	{
 		 GoogleMap GMap;
 
-		public override void OnCreate(Bundle savedInstanceState)
-		{
-			base.OnCreate(savedInstanceState);
+	    public Inspection Inspection { get; set; }
 
-			// Create your fragment here
-		}
+	    public override void OnStart()
+	    {
+	        base.OnStart();
+	       
+	        var image = Activity.FindViewById<ImageView>(Resource.Id.inspImView);
+	        var date = Activity.FindViewById<TextView>(Resource.Id.inspDate);
+	        var auth = Activity.FindViewById<TextView>(Resource.Id.inspAuth);
+	        var description = Activity.FindViewById<TextView>(Resource.Id.inspDescrip);
 
-		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+            image.SetImageBitmap(Utilities.ConvertToBitmap(Inspection.Image));
+	        date.Text = "Date: " + Inspection.Date;
+	        auth.Text = "Author: AndreiS";
+	        description.Text = "Description: " + Inspection.Description;
+
+	    }
+
+        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
-			// Use this to return your custom view for this Fragment
-			// return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 			View view = inflater.Inflate(Resource.Layout.View_Inspection, container, false);
-
-			SetUpMap();
+            SetUpMap();
 			return view;
 		}
+        
 
-
-		void SetUpMap()
+        void SetUpMap()
 		{
 			if (GMap == null)
 			{
@@ -39,8 +47,8 @@ namespace FieldInspection
 
 		public void OnMapReady(GoogleMap googleMap)
 		{
-			GMap = googleMap;
-			GMap.UiSettings.ZoomControlsEnabled = true;                                    LatLng latlng = new LatLng(Convert.ToDouble(45.190247), Convert.ToDouble(28.661764));
+            GMap = googleMap;
+			GMap.UiSettings.ZoomControlsEnabled = true;                                LatLng latlng = new LatLng(Inspection.LocationLatitude, Inspection.LocationLongitude);
 			CameraUpdate camera = CameraUpdateFactory.NewLatLngZoom(latlng, 15);
 			GMap.MoveCamera(camera);               MarkerOptions options = new MarkerOptions()
 			.SetPosition(latlng)

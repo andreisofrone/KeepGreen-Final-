@@ -6,6 +6,7 @@ using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using Java.IO;
+using Newtonsoft.Json;
 
 namespace FieldInspection
 {
@@ -20,7 +21,9 @@ namespace FieldInspection
 
 	public class MainActivity : AppCompatActivity
 	{
-		DrawerLayout drawerLayout;
+	    public Culture SelectedCulture { get; set; }
+
+	    DrawerLayout drawerLayout;
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			SetContentView(Resource.Layout.Main);
@@ -52,7 +55,9 @@ namespace FieldInspection
 			ft.Add(Resource.Id.HomeFrameLayout, new DashboardFragment());
 			ft.Commit();
 
-			var navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
+		    SelectedCulture = JsonConvert.DeserializeObject<Culture>(Intent.GetStringExtra("key"));
+
+            var navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
 			navigationView.NavigationItemSelected += NavigationView_NavigationItemSelected;
 			// Attach item selected handler to navigation view
 

@@ -1,16 +1,21 @@
 using System;
+using System.Collections.Generic;
 using System.Json;
 using System.Threading.Tasks;
 using System.Net;
 using System.IO;
-
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Http.Formatting;
 namespace FieldInspection
 {
     static class ApiUitilities
     {
 		public static string exApiUrl= "104.155.154.190/api/Cultures/Inspections/1";
 
-		public static async Task<JsonValue> FetchWeatherAsync(string url)
+        static HttpClient client = new HttpClient();
+        public static async Task<JsonValue> FetchWeatherAsync(string url)
         {
             // Create an HTTP web request using the URL:
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(new Uri(url));
@@ -68,6 +73,49 @@ namespace FieldInspection
 
             // Write the result to the conditions TextBox:
             conditions = cloudy + " " + cond;
+        }
+
+        public static async Task<Culture>GetProductAsync(string path)
+        {
+            Culture culture = null;
+            HttpResponseMessage response = await client.GetAsync(path);
+            if (response.IsSuccessStatusCode)
+            {
+                culture = await response.Content.ReadAsAsync<Culture>();
+            }
+            return culture;
+        }
+
+        public static IEnumerable<Inspection>GetInspections( Culture SelectedCulture)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://104.155.154.190");
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+            HttpResponseMessage response = client.GetAsync("api/Cultures/Inspections/" + SelectedCulture.ID).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                var inspections = response.Content.ReadAsAsync<IEnumerable<Inspection>>().Result;
+                return inspections.ToList();
+            }
+            return null;
+        }
+
+        public static IEnumerable<Dashboard>GetDashboardValues()
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://104.155.154.190");
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+            HttpResponseMessage response = client.GetAsync("api/Dashboard").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                var dashboard = response.Content.ReadAsAsync<IEnumerable<Dashboard>>().Result;
+                return dashboard.ToList();
+            }
+            return null;
         }
     }
 }

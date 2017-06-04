@@ -1,29 +1,45 @@
-﻿using Android.App;
+﻿using System.Linq;
+using Android.App;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
+using Newtonsoft.Json;
 
 namespace FieldInspection
 {
 	public class DashboardFragment : Fragment
 	{
-		public override void OnCreate(Bundle savedInstanceState)
-		{
-			base.OnCreate(savedInstanceState);
-		}
+        //TODO -> leaga in API dashboard de cultura
+	    public Culture SelectedCulture { get; set; }      
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			View view = inflater.Inflate(Resource.Layout.Dashboard_Layout, container, false);
-			return view;
+		    SelectedCulture = JsonConvert.DeserializeObject<Culture>(this.Activity.Intent.GetStringExtra("key"));
+            return view;
 		}
 
 		public override void OnStart()
 		{
 			base.OnStart();
+		    SetDashboardValues();
 			SetBtns();
-
 		}
+
+	    void SetDashboardValues()
+	    {
+	        var dashboardValues = ApiUitilities.GetDashboardValues();
+	        var windSpeed = Activity.FindViewById<TextView>(Resource.Id.WindSpeedVal);
+	        var temperature = Activity.FindViewById<TextView>(Resource.Id.TempValue);
+	        var pressure = Activity.FindViewById<TextView>(Resource.Id.PressureValue);
+	        var humidity = Activity.FindViewById<TextView>(Resource.Id.HumidityValue);
+
+	        windSpeed.Text = $"{dashboardValues.FirstOrDefault().WindSpeed}"+ " km/h";
+	        temperature.Text = $"{dashboardValues.FirstOrDefault().Temperature}"+ " °C";
+	        pressure.Text = $"{dashboardValues.FirstOrDefault().Pressure}"+" hPa";
+	        humidity.Text = $"{dashboardValues.FirstOrDefault().Humidity}"+" %";
+
+        }
 
 	    void SetBtns() 
 		{ 
