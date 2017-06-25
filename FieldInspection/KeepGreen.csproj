@@ -157,9 +157,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiUitilities.cs" />
-    <Compile Include="DataBaseModelMaping.cs" />
-    <Compile Include="MainApplication.cs" />
+    <Compile Include="Workers\ApiUitilities.cs" />
+    <Compile Include="Workers\DataBaseModelMaping.cs" />
+    <Compile Include="UI\MainApplication.cs" />
     <Compile Include="UI\FieldSelection.cs" />
     <Compile Include="UI\MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -171,12 +171,12 @@
     <Compile Include="Fragments\PressureFragment.cs" />
     <Compile Include="Fragments\HumidityFragment.cs" />
     <Compile Include="Fragments\InspectionsFragment.cs" />
-    <Compile Include="DividerItemDecoration.cs" />
+    <Compile Include="UI\DividerItemDecoration.cs" />
     <Compile Include="Fragments\InspectionViewFragment.cs" />
-    <Compile Include="PlotBars.cs" />
+    <Compile Include="Workers\PlotBars.cs" />
     <Compile Include="Fragments\WindSpeedFragment.cs" />
     <Compile Include="Fragments\TemperatureFragment.cs" />
-    <Compile Include="Utilities.cs" />
+    <Compile Include="Workers\Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
