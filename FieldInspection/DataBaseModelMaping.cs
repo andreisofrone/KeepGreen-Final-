@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Json;
-using System.Threading.Tasks;
-using System.Net;
-using System.IO;
 
 namespace FieldInspection
 {
@@ -12,7 +8,7 @@ namespace FieldInspection
         public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public System.DateTime Date { get; set; }
+        public DateTime Date { get; set; }
         public double LocationLatitude { get; set; }
         public double LocationLongitude { get; set; }
         public byte[] Image { get; set; }
@@ -31,7 +27,7 @@ namespace FieldInspection
         public int Size { get; set; }
         public double LocationLatitude { get; set; }
         public double LocationLongitude { get; set; }
-        public System.DateTime StartDate { get; set; }
+        public DateTime StartDate { get; set; }
         public virtual ICollection<Inspection> Inspections { get; set; }
     }
 

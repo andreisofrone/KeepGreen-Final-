@@ -158,7 +158,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiUitilities.cs" />
-    <Compile Include="BitmapHelpers.cs" />
     <Compile Include="DataBaseModelMaping.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="UI\FieldSelection.cs" />
@@ -172,7 +171,6 @@
     <Compile Include="Fragments\PressureFragment.cs" />
     <Compile Include="Fragments\HumidityFragment.cs" />
     <Compile Include="Fragments\InspectionsFragment.cs" />
-    <Compile Include="PhotoAlbum.cs" />
     <Compile Include="DividerItemDecoration.cs" />
     <Compile Include="Fragments\InspectionViewFragment.cs" />
     <Compile Include="PlotBars.cs" />
@@ -206,46 +204,10 @@
     <AndroidResource Include="Resources\drawable\Add.png" />
     <AndroidResource Include="Resources\drawable\Icon.png" />
     <AndroidResource Include="Resources\layout\Inspections_Layout.axml" />
-    <AndroidResource Include="Resources\drawable\arc_de_triomphe.jpg" />
-    <AndroidResource Include="Resources\drawable\before_mobile_phones.jpg" />
-    <AndroidResource Include="Resources\drawable\big_ben_1.jpg" />
-    <AndroidResource Include="Resources\drawable\big_ben_2.jpg" />
-    <AndroidResource Include="Resources\drawable\buckingham_guards.jpg" />
-    <AndroidResource Include="Resources\drawable\champ_elysees.jpg" />
-    <AndroidResource Include="Resources\drawable\downtown_edinburgh.jpg" />
-    <AndroidResource Include="Resources\drawable\edinburgh_castle_1.jpg" />
-    <AndroidResource Include="Resources\drawable\edinburgh_castle_2.jpg" />
-    <AndroidResource Include="Resources\drawable\edinburgh_from_on_high.jpg" />
-    <AndroidResource Include="Resources\drawable\edinburgh_station.jpg" />
-    <AndroidResource Include="Resources\drawable\eurostar.jpg" />
-    <AndroidResource Include="Resources\drawable\heres_lookin_at_ya.jpg" />
-    <AndroidResource Include="Resources\drawable\inside_notre_dame.jpg" />
-    <AndroidResource Include="Resources\drawable\la_tour_eiffel.jpg" />
-    <AndroidResource Include="Resources\drawable\london_eye.jpg" />
-    <AndroidResource Include="Resources\drawable\louvre_1.jpg" />
-    <AndroidResource Include="Resources\drawable\louvre_2.jpg" />
-    <AndroidResource Include="Resources\drawable\medieval_siege_gun.jpg" />
-    <AndroidResource Include="Resources\drawable\modest_accomodations.jpg" />
-    <AndroidResource Include="Resources\drawable\museum_and_castle.jpg" />
-    <AndroidResource Include="Resources\drawable\notre_dame.jpg" />
-    <AndroidResource Include="Resources\drawable\old_meets_new.jpg" />
-    <AndroidResource Include="Resources\drawable\one_o_clock_gun.jpg" />
-    <AndroidResource Include="Resources\drawable\pompidou_centre.jpg" />
-    <AndroidResource Include="Resources\drawable\portcullis_gate.jpg" />
-    <AndroidResource Include="Resources\drawable\royal_mile.jpg" />
-    <AndroidResource Include="Resources\drawable\rue_cler.jpg" />
-    <AndroidResource Include="Resources\drawable\scott_monument.jpg" />
-    <AndroidResource Include="Resources\drawable\seine_barge.jpg" />
-    <AndroidResource Include="Resources\drawable\seine_river.jpg" />
-    <AndroidResource Include="Resources\drawable\to_notre_dame.jpg" />
-    <AndroidResource Include="Resources\drawable\tower_of_london.jpg" />
-    <AndroidResource Include="Resources\drawable\tower_visitors.jpg" />
-    <AndroidResource Include="Resources\drawable\versailles_fountains.jpg" />
-    <AndroidResource Include="Resources\drawable\versailles_gates.jpg" />
-    <AndroidResource Include="Resources\drawable\victoria_albert.jpg" />
-    <AndroidResource Include="Resources\drawable\view_from_holyrood_park.jpg" />
     <AndroidResource Include="Resources\layout\Card_Layout.axml" />
-    <AndroidResource Include="Resources\layout\View_Inspection.axml" />
+    <AndroidResource Include="Resources\layout\View_Inspection.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\ic_add_white_24dp.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_add_white_24dp.png" />
@@ -285,9 +247,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\styles.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Splash.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\colors.xml">

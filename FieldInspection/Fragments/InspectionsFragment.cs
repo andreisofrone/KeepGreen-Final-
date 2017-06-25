@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using Android.App;
-using Android.Content;
-using Android.Graphics;
+﻿using Android.App;
 using Android.OS;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using com.refractored.fab;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace FieldInspection
 {
@@ -22,7 +17,6 @@ namespace FieldInspection
         RecyclerView mRecyclerView;
         RecyclerView.LayoutManager mLayoutManager;
         PhotoAlbumAdapter mAdapter;
-        PhotoAlbum mPhotoAlbum;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -48,7 +42,7 @@ namespace FieldInspection
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
             var view = inflater.Inflate(Resource.Layout.Inspections_Layout, container, false);
             SelectedCulture = JsonConvert.DeserializeObject<Culture>(this.Activity.Intent.GetStringExtra("key"));
-            mPhotoAlbum = new PhotoAlbum();
+          
             mRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.recyclerView);
             mLayoutManager = new LinearLayoutManager(view.Context);
             mRecyclerView.HasFixedSize = true;
@@ -57,7 +51,7 @@ namespace FieldInspection
             mRecyclerView.SetLayoutManager(mLayoutManager);
             mRecyclerView.AddItemDecoration(new DividerItemDecoration(Activity, DividerItemDecoration.VerticalList));
 
-            mAdapter = new PhotoAlbumAdapter(mPhotoAlbum,SelectedCulture);
+            mAdapter = new PhotoAlbumAdapter(SelectedCulture);
             mAdapter.ItemClick += OnItemClick;
             mRecyclerView.SetAdapter(mAdapter);
 
@@ -111,25 +105,16 @@ namespace FieldInspection
         }
     }
 
-    //----------------------------------------------------------------------
-    // ADAPTER
-
-    // Adapter to connect the data set (photo album) to the RecyclerView: 
     public class PhotoAlbumAdapter : RecyclerView.Adapter
     {
         public Culture SelectedCulture { get; set; }
-        // Event handler for item clicks:
         public event EventHandler<int> ItemClick;
         
         public Inspection[] Inspections { get; set; }
-
-        // Underlying data set (a photo album):
-        public PhotoAlbum mPhotoAlbum;
-
+   
         // Load the adapter with the data set (photo album) at construction time:
-        public PhotoAlbumAdapter(PhotoAlbum photoAlbum,Culture culture)
+        public PhotoAlbumAdapter(Culture culture)
         {
-            mPhotoAlbum = photoAlbum;
             SelectedCulture = culture;
             Inspections = ApiUitilities.GetInspections(SelectedCulture).ToArray();
         }
@@ -145,27 +130,15 @@ namespace FieldInspection
             // Inflate the CardView for the photo:
             View itemView = LayoutInflater.From(parent.Context).
                                           Inflate(Resource.Layout.Card_Layout, parent, false);
-
-            // Create a ViewHolder to find and hold these view references, and 
-            // register OnClick with the view holder:
             PhotoViewHolder vh = new PhotoViewHolder(itemView, OnClick);
-          
+        
             return vh;
         }
-
-        // Fill in the contents of the photo card (invoked by the layout manager):
+        
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             PhotoViewHolder vh = holder as PhotoViewHolder;
-            
 
-
-            // Set the ImageView and TextView in this ViewHolder's CardView 
-            // from this position in the photo album:
-            //vh.Image.SetImageResource(mPhotoAlbum[position].PhotoID);
-            //vh.Caption.Text = mPhotoAlbum[position].Caption;
-
-            //vh.Image.SetImageResource(mPhotoAlbum[position].PhotoID);
             if (Inspections.Length > 0)
             {
                 vh.Image.SetImageBitmap(Utilities.ConvertToBitmap(Inspections[position].Image));
@@ -173,14 +146,12 @@ namespace FieldInspection
             }
 
         }
-
-        // Return the number of photos available in the photo album:
+        
         public override int ItemCount
         {
             get { return Inspections.Length; }
         }
-
-        // Raise an event when the item-click takes place:
+        
         void OnClick(int position)
         {
             if (ItemClick != null)

@@ -61,6 +61,12 @@ namespace FieldInspection
             {
                 if (_imageView != null && inspDescription.Text != null)
                 {
+                    var ft = FragmentManager.BeginTransaction();
+                    var inspections = new InspectionsFragment();
+                    ft.AddToBackStack(null);
+                    ft.Replace(Resource.Id.HomeFrameLayout, inspections);
+                    ft.Commit();
+
                     var newInsp = new Inspection();
 
                     newInsp.Name = "Testing";
@@ -74,12 +80,7 @@ namespace FieldInspection
                     newInsp.Image = Utilities.ConvertBitmapToByte(Utilities.BitmapResizer(App.bitmap));
                     await SaveTodoItemAsync(newInsp, true);
                     App.bitmap = null;
-
-                    var ft = FragmentManager.BeginTransaction();
-                    var inspections = new InspectionsFragment();
-                    ft.AddToBackStack(null);
-                    ft.Replace(Resource.Id.HomeFrameLayout, inspections);
-                    ft.Commit();
+                  
                    
                 }
             };
