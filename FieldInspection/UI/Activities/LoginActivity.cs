@@ -15,7 +15,7 @@ namespace FieldInspection.UI
 
 			loginButton.Click += delegate
 			{
-				StartActivity(typeof(FieldSelection));
+				StartActivity(typeof(FieldSelectionActivity));
 			};
 		}
 	}

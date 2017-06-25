@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 namespace FieldInspection.UI
 {
     [Activity(Label = "FieldSelection", Theme = "@style/Theme.Splash")]
-    public class FieldSelection : Activity,ISerializable
+    public class FieldSelectionActivity : Activity,ISerializable
     {
         public static string exApiUrl = "http://104.155.154.190/api/Cultures/Inspections/1";
       

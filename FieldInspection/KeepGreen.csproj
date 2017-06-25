@@ -160,22 +160,22 @@
     <Compile Include="Workers\ApiUitilities.cs" />
     <Compile Include="Workers\DataBaseModelMaping.cs" />
     <Compile Include="UI\MainApplication.cs" />
-    <Compile Include="UI\FieldSelection.cs" />
-    <Compile Include="UI\MainActivity.cs" />
+    <Compile Include="UI\Activities\FieldSelectionActivity.cs" />
+    <Compile Include="UI\Activities\MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\SplashActivity.cs" />
-    <Compile Include="Fragments\InspectionFragment.cs" />
-    <Compile Include="Fragments\DashboardFragment.cs" />
-    <Compile Include="UI\LoginActivity.cs" />
-    <Compile Include="Fragments\PressureFragment.cs" />
-    <Compile Include="Fragments\HumidityFragment.cs" />
-    <Compile Include="Fragments\InspectionsFragment.cs" />
+    <Compile Include="UI\Activities\SplashActivity.cs" />
+    <Compile Include="UI\Fragments\InspectionFragment.cs" />
+    <Compile Include="UI\Fragments\DashboardFragment.cs" />
+    <Compile Include="UI\Activities\LoginActivity.cs" />
+    <Compile Include="UI\Fragments\PressureFragment.cs" />
+    <Compile Include="UI\Fragments\HumidityFragment.cs" />
+    <Compile Include="UI\Fragments\InspectionsFragment.cs" />
     <Compile Include="UI\DividerItemDecoration.cs" />
-    <Compile Include="Fragments\InspectionViewFragment.cs" />
+    <Compile Include="UI\Fragments\InspectionViewFragment.cs" />
     <Compile Include="Workers\PlotBars.cs" />
-    <Compile Include="Fragments\WindSpeedFragment.cs" />
-    <Compile Include="Fragments\TemperatureFragment.cs" />
+    <Compile Include="UI\Fragments\WindSpeedFragment.cs" />
+    <Compile Include="UI\Fragments\TemperatureFragment.cs" />
     <Compile Include="Workers\Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
