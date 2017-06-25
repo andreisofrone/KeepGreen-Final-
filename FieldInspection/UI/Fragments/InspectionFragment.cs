@@ -10,6 +10,7 @@ using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,11 +62,20 @@ namespace FieldInspection
             {
                 if (_imageView != null && inspDescription.Text != null)
                 {
-                    var ft = FragmentManager.BeginTransaction();
-                    var inspections = new InspectionsFragment();
-                    ft.AddToBackStack(null);
-                    ft.Replace(Resource.Id.HomeFrameLayout, inspections);
-                    ft.Commit();
+                    ProgressDialog progress = new ProgressDialog(Activity, AlertDialog.ThemeDeviceDefaultLight);
+                    progress.SetMessage("I'm getting data...");
+                    progress.SetTitle("Please wait");
+                    progress.Show();
+
+                    await Task.Run(() =>
+                    {
+                        var ft = FragmentManager.BeginTransaction();
+                        var inspections = new InspectionsFragment(ApiUitilities.GetInspections(SelectedCulture).ToArray());
+                        ft.AddToBackStack(null);
+                        ft.Replace(Resource.Id.HomeFrameLayout, inspections);
+                        ft.Commit();
+                        return true;
+                    });
 
                     var newInsp = new Inspection();
 

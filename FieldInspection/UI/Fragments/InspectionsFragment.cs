@@ -7,33 +7,48 @@ using com.refractored.fab;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace FieldInspection
 {
     public class InspectionsFragment : Fragment, IScrollDirectorListener
     {
         public Culture SelectedCulture { get; set; }
+        public Inspection[] Inspections { get; set; }
 
         RecyclerView mRecyclerView;
         RecyclerView.LayoutManager mLayoutManager;
         PhotoAlbumAdapter mAdapter;
 
+        public InspectionsFragment(Inspection[] inspections)
+        {
+            Inspections = inspections;
+        }
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
         }
-        void OnItemClick(object sender, int position)
+        async void OnItemClick(object sender, int position)
         {
-            var inspections = ApiUitilities.GetInspections(SelectedCulture).ToArray();
-            var ft = FragmentManager.BeginTransaction();
-            var inspecView = new InspectionViewFragment();
-            ft.AddToBackStack(null);
-            ft.Replace(Resource.Id.HomeFrameLayout, inspecView);
-            ft.Commit();
-            inspecView.Inspection = inspections[position];
+            ProgressDialog progress = new ProgressDialog(Activity, Android.App.AlertDialog.ThemeDeviceDefaultLight);
+            progress.SetMessage("I'm getting data...");
+            progress.SetTitle("Please wait");
+            progress.Show();
 
-
+            await Task.Run(() =>
+            {
+                var inspections = ApiUitilities.GetInspections(SelectedCulture).ToArray();
+                var ft = FragmentManager.BeginTransaction();
+                var inspecView = new InspectionViewFragment();
+                ft.AddToBackStack(null);
+                ft.Replace(Resource.Id.HomeFrameLayout, inspecView);
+                ft.Commit();
+                inspecView.Inspection = inspections[position];
+                    return true;
+            });
+            
+            progress.Dismiss();
+            Toast.MakeText(Activity, "Done", ToastLength.Long).Show();
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -51,7 +66,7 @@ namespace FieldInspection
             mRecyclerView.SetLayoutManager(mLayoutManager);
             mRecyclerView.AddItemDecoration(new DividerItemDecoration(Activity, DividerItemDecoration.VerticalList));
 
-            mAdapter = new PhotoAlbumAdapter(SelectedCulture);
+            mAdapter = new PhotoAlbumAdapter(SelectedCulture,Inspections);
             mAdapter.ItemClick += OnItemClick;
             mRecyclerView.SetAdapter(mAdapter);
 
@@ -113,10 +128,10 @@ namespace FieldInspection
         public Inspection[] Inspections { get; set; }
    
         // Load the adapter with the data set (photo album) at construction time:
-        public PhotoAlbumAdapter(Culture culture)
+        public PhotoAlbumAdapter(Culture culture, Inspection[] inspections)
         {
             SelectedCulture = culture;
-            Inspections = ApiUitilities.GetInspections(SelectedCulture).ToArray();
+            Inspections = inspections;       
         }
 
         public override void OnAttachedToRecyclerView(RecyclerView recyclerView)

@@ -4,14 +4,19 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace FieldInspection
 {
 	public class DashboardFragment : Fragment
 	{
         //TODO -> leaga in API dashboard de cultura
-	    public Culture SelectedCulture { get; set; }      
-
+	    public Culture SelectedCulture { get; set; }
+        //private IEnumerable<Culture> Cultures { get; set; }
+        //public DashboardFragment(IEnumerable<Culture> cultures)
+        //{
+        //    Cultures = cultures;
+        //}
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			View view = inflater.Inflate(Resource.Layout.Dashboard_Layout, container, false);

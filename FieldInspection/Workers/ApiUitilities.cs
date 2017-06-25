@@ -54,5 +54,21 @@ namespace FieldInspection
             }
             return null;
         }
+
+        public static IEnumerable<Culture> GetCultures()
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://104.155.154.190");
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+            HttpResponseMessage response = client.GetAsync("api/Cultures").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                var cultures = response.Content.ReadAsAsync<IEnumerable<Culture>>().Result;
+                return cultures.ToList();
+            }
+            return null;
+        }
     }
 }
