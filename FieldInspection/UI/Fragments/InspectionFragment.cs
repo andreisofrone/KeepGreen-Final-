@@ -10,7 +10,6 @@ using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,61 +21,52 @@ namespace FieldInspection
 
     public class InspectionFragment : Fragment
     {
-        private  HttpClient client = new HttpClient();
+        private HttpClient client = new HttpClient();
         public Culture SelectedCulture { get; set; }
         private Position Position { get; set; }
         ImageView _imageView;
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-		{
-			View view = inflater.Inflate(Resource.Layout.Inspection_Layout, container, false);
-		    SelectedCulture = JsonConvert.DeserializeObject<Culture>(Activity.Intent.GetStringExtra("key"));
+        {
+            View view = inflater.Inflate(Resource.Layout.Inspection_Layout, container, false);
+            SelectedCulture = JsonConvert.DeserializeObject<Culture>(Activity.Intent.GetStringExtra("key"));
             return view;
-		}
+        }
 
-		public override void OnActivityResult(int requestCode, Result resultCode, Intent data)
-		{
-			base.OnActivityResult(requestCode, resultCode, data);
+        public override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
 
-			Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
-			Uri contentUri = Uri.FromFile(App._file);
-			mediaScanIntent.SetData(contentUri);
-			Activity.SendBroadcast(mediaScanIntent);
+            Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
+            Uri contentUri = Uri.FromFile(App._file);
+            mediaScanIntent.SetData(contentUri);
+            Activity.SendBroadcast(mediaScanIntent);
 
-			_imageView = View.FindViewById<ImageView>(Resource.Id.inspectionImage);
+            _imageView = View.FindViewById<ImageView>(Resource.Id.inspectionImage);
 
-			var height = _imageView.Height;
-			var width = _imageView.Width;
-			App.bitmap = App._file.Path.LoadAndResizeBitmap(300, 200);
-			if (App.bitmap != null)
-			{
-				_imageView.SetImageBitmap(App.bitmap);			
-			}
+            var height = _imageView.Height;
+            var width = _imageView.Width;
+            App.bitmap = App._file.Path.LoadAndResizeBitmap(300, 200);
+            if (App.bitmap != null)
+            {
+                _imageView.SetImageBitmap(App.bitmap);
+            }
 
-			GC.Collect();
+            GC.Collect();
 
-		    var sendInspection = View.FindViewById<Button>(Resource.Id.SendInspection);
-		    var inspDescription = View.FindViewById<EditText>(Resource.Id.inspectionDescription);
+            var sendInspection = View.FindViewById<Button>(Resource.Id.SendInspection);
+            var inspDescription = View.FindViewById<EditText>(Resource.Id.inspectionDescription);
 
             sendInspection.Click += async (sender, args) =>
             {
                 if (_imageView != null && inspDescription.Text != null)
                 {
-                    ProgressDialog progress = new ProgressDialog(Activity, AlertDialog.ThemeDeviceDefaultLight);
-                    progress.SetMessage("I'm getting data...");
-                    progress.SetTitle("Please wait");
-                    progress.Show();
-
-                    await Task.Run(() =>
-                    {
-                        var ft = FragmentManager.BeginTransaction();
-                        var inspections = new InspectionsFragment(ApiUitilities.GetInspections(SelectedCulture).ToArray());
-                        ft.AddToBackStack(null);
-                        ft.Replace(Resource.Id.HomeFrameLayout, inspections);
-                        ft.Commit();
-                        return true;
-                    });
-
+                    //var ft = FragmentManager.BeginTransaction();
+                    //var inspections = new InspectionsFragment();
+                    //ft.AddToBackStack(null);
+                    //ft.Replace(Resource.Id.HomeFrameLayout, inspections);
+                    //ft.Commit();
+                    FragmentManager.PopBackStack();
                     var newInsp = new Inspection();
 
                     newInsp.Name = "Testing";
@@ -90,8 +80,8 @@ namespace FieldInspection
                     newInsp.Image = Utilities.ConvertBitmapToByte(Utilities.BitmapResizer(App.bitmap));
                     await SaveTodoItemAsync(newInsp, true);
                     App.bitmap = null;
-                  
-                   
+
+
                 }
             };
 
@@ -104,7 +94,7 @@ namespace FieldInspection
             var position = await locator.GetPositionAsync(timeoutMilliseconds: 10000);
             Position = position;
         }
-        
+
 
         public async Task SaveTodoItemAsync(Inspection inspection, bool isNewItem = false)
         {
@@ -118,58 +108,58 @@ namespace FieldInspection
             {
                 response = await client.PostAsync(uri, content);
             }
-      }
-     
-
-		public override void OnActivityCreated(Bundle savedInstanceState)
-		{
-			base.OnActivityCreated(savedInstanceState);
-			StartInspection();
-		}
+        }
 
 
-		void StartInspection()
-		{
-			if (IsThereAnAppToTakePictures())
-			{
-				CreateDirectoryForPictures();
-
-				var button = View.FindViewById<Button>(Resource.Id.takePicture);
-				_imageView = View.FindViewById<ImageView>(Resource.Id.inspectionImage);
-				if (button != null && _imageView != null)
-				{
-					button.Click += TakeAPicture;
-				}
-			}
-		}
-
-		void CreateDirectoryForPictures()
-		{
-			App._dir = new Java.IO.File(
-				Environment.GetExternalStoragePublicDirectory(
-					Environment.DirectoryPictures), "CameraAppDemo");
-			if (!App._dir.Exists())
-			{
-				App._dir.Mkdirs();
-			}
-		}
+        public override void OnActivityCreated(Bundle savedInstanceState)
+        {
+            base.OnActivityCreated(savedInstanceState);
+            StartInspection();
+        }
 
 
-		void TakeAPicture(object sender, EventArgs eventArgs)
-		{
-			Intent intent = new Intent(MediaStore.ActionImageCapture);
-			App._file = new Java.IO.File(App._dir, String.Format("myPhoto_{0}.jpg", Guid.NewGuid()));
-			intent.PutExtra(MediaStore.ExtraOutput, Uri.FromFile(App._file));
-			StartActivityForResult(intent, 0);
-		}
+        void StartInspection()
+        {
+            if (IsThereAnAppToTakePictures())
+            {
+                CreateDirectoryForPictures();
+
+                var button = View.FindViewById<Button>(Resource.Id.takePicture);
+                _imageView = View.FindViewById<ImageView>(Resource.Id.inspectionImage);
+                if (button != null && _imageView != null)
+                {
+                    button.Click += TakeAPicture;
+                }
+            }
+        }
+
+        void CreateDirectoryForPictures()
+        {
+            App._dir = new Java.IO.File(
+                Environment.GetExternalStoragePublicDirectory(
+                    Environment.DirectoryPictures), "CameraAppDemo");
+            if (!App._dir.Exists())
+            {
+                App._dir.Mkdirs();
+            }
+        }
 
 
-		bool IsThereAnAppToTakePictures()
-		{
-			var intent = new Intent(MediaStore.ActionImageCapture);
-			IList<ResolveInfo> availableActivities = Activity
-				.PackageManager.QueryIntentActivities(intent, PackageInfoFlags.MatchDefaultOnly);
-			return availableActivities != null && availableActivities.Count > 0;
-		}
-	}
+        void TakeAPicture(object sender, EventArgs eventArgs)
+        {
+            Intent intent = new Intent(MediaStore.ActionImageCapture);
+            App._file = new Java.IO.File(App._dir, String.Format("myPhoto_{0}.jpg", Guid.NewGuid()));
+            intent.PutExtra(MediaStore.ExtraOutput, Uri.FromFile(App._file));
+            StartActivityForResult(intent, 0);
+        }
+
+
+        bool IsThereAnAppToTakePictures()
+        {
+            var intent = new Intent(MediaStore.ActionImageCapture);
+            IList<ResolveInfo> availableActivities = Activity
+                .PackageManager.QueryIntentActivities(intent, PackageInfoFlags.MatchDefaultOnly);
+            return availableActivities != null && availableActivities.Count > 0;
+        }
+    }
 }

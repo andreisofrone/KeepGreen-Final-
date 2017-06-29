@@ -23,7 +23,7 @@ namespace FieldInspection
 			base.OnStart();
 			var chart = new BarChartView(Activity);
 			chart = Activity.FindViewById<BarChartView>(Resource.Id.barChart);
-			PlotBars.PlotBarsChart(chart, 20, 70, 10, 10);
+			PlotBars.PlotBarsChart(chart, 23, 30, 27, 34);
 		}
 	}
 }
