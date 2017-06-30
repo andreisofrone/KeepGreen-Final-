@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using System;
+using Android.App;
 using Android.OS;
 using Android.Views;
 using BarChart;
@@ -7,12 +8,13 @@ namespace FieldInspection
 {
 	public class WindSpeedFragment : Fragment
 	{
-		public override void OnCreate(Bundle savedInstanceState)
-		{
-			base.OnCreate(savedInstanceState);
-		}
+	    private int Dashboard { get; set; }
 
-		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	    public WindSpeedFragment(int dashboard)
+	    {
+	        Dashboard = dashboard;
+	    }
+        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			View view = inflater.Inflate(Resource.Layout.Details, container, false);
 			return view;
@@ -23,7 +25,7 @@ namespace FieldInspection
 			base.OnStart();
 			var chart = new BarChartView(Activity);
 			chart = Activity.FindViewById<BarChartView>(Resource.Id.barChart);
-			PlotBars.PlotBarsChart(chart, 40, 30, 35, 28);
+			PlotBars.PlotBarsChart(chart, Dashboard, 30, 35, 28);
 		}
 			
 	}

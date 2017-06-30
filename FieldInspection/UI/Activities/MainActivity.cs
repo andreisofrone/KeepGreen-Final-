@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using Android.Support.Design.Widget;
@@ -24,14 +25,14 @@ namespace FieldInspection
     public class MainActivity : AppCompatActivity
     {
         public Culture SelectedCulture { get; set; }
-        public Culture DaMerge { get; set; }
-        DrawerLayout drawerLayout;
+
+        DrawerLayout _drawerLayout;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             SetContentView(Resource.Layout.Main);
             base.OnCreate(savedInstanceState);
 
-            drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
+            _drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 
             // Init toolbar
             var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.App_Bar);
@@ -41,11 +42,11 @@ namespace FieldInspection
             SupportActionBar.SetDisplayShowHomeEnabled(true);
 
             // Create ActionBarDrawerToggle button and add it to the toolbar
-            var drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, Resource.String.open_drawer, Resource.String.close_drawer);
+            var drawerToggle = new ActionBarDrawerToggle(this, _drawerLayout, toolbar, Resource.String.open_drawer, Resource.String.close_drawer);
 
             if (drawerToggle != null)
             {
-                drawerLayout.SetDrawerListener(drawerToggle);
+                _drawerLayout.SetDrawerListener(drawerToggle);
             }
 
             drawerToggle.SyncState();
@@ -88,7 +89,6 @@ namespace FieldInspection
 
                         var ft = FragmentManager.BeginTransaction();
                         var home = new DashboardFragment();
-                        //ft.AddToBackStack(null);
                         ft.Replace(Resource.Id.HomeFrameLayout, home);
                         ft.Commit();
                         
@@ -98,32 +98,17 @@ namespace FieldInspection
 
                         var ftt = FragmentManager.BeginTransaction();
                         var inspp = new InspectionsFragment(ApiUitilities.GetInspections(SelectedCulture).ToArray());
-                        //ftt.AddToBackStack(null);
                         ftt.Replace(Resource.Id.HomeFrameLayout, inspp);
                         ftt.Commit();
-                      //  progress.Dismiss();
                         break;
 
                 }
                 return true;
             });
             // Close drawer
-            drawerLayout.CloseDrawers();
+            _drawerLayout.CloseDrawers();
             progress.Dismiss();
         }
-
-
-        ////add custom icon to tolbar
-        //public override bool OnCreateOptionsMenu(Android.Views.IMenu menu)
-        //{
-        //	MenuInflater.Inflate(Resource.Menu.action_menu, menu);
-        //	if (menu != null)
-        //	{
-        //		menu.FindItem(Resource.Id.action_refresh).SetVisible(true);
-        //	}
-        //	return base.OnCreateOptionsMenu(menu);
-        //}
-
 
         //define action for tolbar icon press
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -131,7 +116,6 @@ namespace FieldInspection
             switch (item.ItemId)
             {
                 case Android.Resource.Id.Home:
-                    //this.Activity.Finish();
                     return true;
                 default:
                     return base.OnOptionsItemSelected(item);

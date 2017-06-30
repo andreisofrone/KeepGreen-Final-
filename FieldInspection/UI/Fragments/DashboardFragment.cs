@@ -1,10 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Android.App;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using Android.Drm;
+using Android.Graphics;
 
 namespace FieldInspection
 {
@@ -12,12 +15,10 @@ namespace FieldInspection
 	{
         //TODO -> leaga in API dashboard de cultura
 	    public Culture SelectedCulture { get; set; }
-        //private IEnumerable<Culture> Cultures { get; set; }
-        //public DashboardFragment(IEnumerable<Culture> cultures)
-        //{
-        //    Cultures = cultures;
-        //}
-		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+
+	    public IEnumerable<Dashboard> DashboardValues { get; set; }
+
+	    public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			View view = inflater.Inflate(Resource.Layout.Dashboard_Layout, container, false);
 		    SelectedCulture = JsonConvert.DeserializeObject<Culture>(this.Activity.Intent.GetStringExtra("key"));
@@ -31,18 +32,71 @@ namespace FieldInspection
 			SetBtns();
 		}
 
-	    void SetDashboardValues()
+	    void CheckValues(string alertMessage)
 	    {
-	        var dashboardValues = ApiUitilities.GetDashboardValues();
+	        AlertDialog.Builder alert = new AlertDialog.Builder(Activity);
+	        alert.SetTitle("Warning");
+	        alert.SetMessage(alertMessage);
+            
+	        alert.SetPositiveButton("Ok", (senderAlert, args) => {	           
+	        });
+
+	        Dialog dialog = alert.Create();
+	        dialog.Show();
+        }
+
+
+        void SetDashboardValues()
+	    {
+	        DashboardValues = ApiUitilities.GetDashboardValues();
 	        var windSpeed = Activity.FindViewById<TextView>(Resource.Id.WindSpeedVal);
 	        var temperature = Activity.FindViewById<TextView>(Resource.Id.TempValue);
 	        var pressure = Activity.FindViewById<TextView>(Resource.Id.PressureValue);
 	        var humidity = Activity.FindViewById<TextView>(Resource.Id.HumidityValue);
 
-	        windSpeed.Text = $"{dashboardValues.FirstOrDefault().WindSpeed}"+ " km/h";
-	        temperature.Text = $"{dashboardValues.FirstOrDefault().Temperature}"+ " °C";
-	        pressure.Text = $"{dashboardValues.FirstOrDefault().Pressure}"+" hPa";
-	        humidity.Text = $"{dashboardValues.FirstOrDefault().Humidity}"+" %";
+	        var windSpeedVal = DashboardValues.FirstOrDefault(result => result.ID == SelectedCulture.ID).WindSpeed;
+	        var tempVal = DashboardValues.FirstOrDefault(result => result.ID == SelectedCulture.ID).Temperature;
+	        var pressVal = DashboardValues.FirstOrDefault(result => result.ID == SelectedCulture.ID).Pressure;
+	        var humVal = DashboardValues.FirstOrDefault(result => result.ID == SelectedCulture.ID).Humidity;
+
+            windSpeed.Text = $"{windSpeedVal}"+ " km/h";
+	        temperature.Text = $"{tempVal}"+ " °C";
+	        pressure.Text = $"{pressVal}"+" mmHg";
+	        humidity.Text = $"{humVal}"+" %";
+
+	        if (windSpeedVal > 50.0)
+	        {
+	            CheckValues("Wind speed is too high !");
+                windSpeed.SetBackgroundColor(Color.Red);
+                windSpeed.SetTextColor(Color.Black);
+	        }
+	        if (tempVal > 35)
+	        {
+	            CheckValues("Temperture is too high !");
+	            temperature.SetBackgroundColor(Color.Red);
+	            temperature.SetTextColor(Color.Black);
+            }
+
+	        if (tempVal < 5)
+	        {
+	            CheckValues("Temperture is too low !");
+	            temperature.SetBackgroundColor(Color.Red);
+	            temperature.SetTextColor(Color.Black);
+            }
+
+	        if (humVal > 80)
+	        {
+	            CheckValues("Humidity is too high !");
+	            humidity.SetBackgroundColor(Color.Red);
+	            humidity.SetTextColor(Color.Black);
+            }
+
+	        if (humVal < 65)
+	        {
+	            CheckValues("Humidity is too low !");
+	            humidity.SetBackgroundColor(Color.Red);
+	            humidity.SetTextColor(Color.Black);
+            }
 
         }
 
@@ -52,7 +106,7 @@ namespace FieldInspection
 			pressBtn.Click += delegate
 			{
 				var ft = FragmentManager.BeginTransaction();
-				var detailsPres = new PressureFragment();
+				var detailsPres = new PressureFragment(Convert.ToInt32(DashboardValues.FirstOrDefault(result => result.ID == SelectedCulture.ID).Pressure));
 				ft.AddToBackStack(null);
 				ft.Replace(Resource.Id.HomeFrameLayout, detailsPres);
 				ft.Commit();
@@ -63,7 +117,7 @@ namespace FieldInspection
 			humBtn.Click += delegate
 			{
 				var ft = FragmentManager.BeginTransaction();
-				var humPres = new HumidityFragment();
+				var humPres = new HumidityFragment(Convert.ToInt32(DashboardValues.FirstOrDefault(result => result.ID == SelectedCulture.ID).Humidity));
 				ft.AddToBackStack(null);
 				ft.Replace(Resource.Id.HomeFrameLayout, humPres);
 				ft.Commit();
@@ -74,7 +128,7 @@ namespace FieldInspection
 			windSpeedbtn.Click += delegate
 						{
 							var ft = FragmentManager.BeginTransaction();
-				var windSpeed = new WindSpeedFragment();
+				var windSpeed = new WindSpeedFragment(Convert.ToInt32(DashboardValues.FirstOrDefault(result => result.ID == SelectedCulture.ID).WindSpeed));
 			ft.AddToBackStack(null);
 							ft.Replace(Resource.Id.HomeFrameLayout, windSpeed);
 							ft.Commit();
@@ -85,7 +139,7 @@ namespace FieldInspection
 			tempBtn.Click += delegate
 						{
 							var ft = FragmentManager.BeginTransaction();
-				var temperature = new TemperatureFragment();
+				var temperature = new TemperatureFragment(Convert.ToInt32(DashboardValues.FirstOrDefault(result => result.ID == SelectedCulture.ID).Temperature));
 			ft.AddToBackStack(null);
 							ft.Replace(Resource.Id.HomeFrameLayout, temperature);
 							ft.Commit();

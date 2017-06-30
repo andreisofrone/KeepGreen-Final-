@@ -24,10 +24,7 @@ namespace FieldInspection
         {
             Inspections = inspections;
         }
-        public override void OnCreate(Bundle savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
-        }
+
         async void OnItemClick(object sender, int position)
         {
             ProgressDialog progress = new ProgressDialog(Activity, Android.App.AlertDialog.ThemeDeviceDefaultLight);

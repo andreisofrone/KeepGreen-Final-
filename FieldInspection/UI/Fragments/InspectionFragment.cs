@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Android.Views.InputMethods;
 
 namespace FieldInspection
 {
@@ -32,6 +33,7 @@ namespace FieldInspection
             SelectedCulture = JsonConvert.DeserializeObject<Culture>(Activity.Intent.GetStringExtra("key"));
             return view;
         }
+        
 
         public override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
@@ -67,9 +69,15 @@ namespace FieldInspection
                     //ft.Replace(Resource.Id.HomeFrameLayout, inspections);
                     //ft.Commit();
                     FragmentManager.PopBackStack();
+                    InputMethodManager inputManager = (InputMethodManager)Activity.GetSystemService(Context.InputMethodService);
+                    var currentFocus = Activity.CurrentFocus;
+                    if (currentFocus != null)
+                    {
+                        inputManager.HideSoftInputFromWindow(currentFocus.WindowToken, HideSoftInputFlags.None);
+                    }
                     var newInsp = new Inspection();
 
-                    newInsp.Name = "Testing";
+                    newInsp.Name = SelectedCulture.Name;
                     newInsp.Description = inspDescription.Text;
                     newInsp.CultureID = SelectedCulture.ID;
                     newInsp.AuthorID = 1;
