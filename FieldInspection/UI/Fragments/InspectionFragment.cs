@@ -63,11 +63,6 @@ namespace FieldInspection
             {
                 if (_imageView != null && inspDescription.Text != null)
                 {
-                    //var ft = FragmentManager.BeginTransaction();
-                    //var inspections = new InspectionsFragment();
-                    //ft.AddToBackStack(null);
-                    //ft.Replace(Resource.Id.HomeFrameLayout, inspections);
-                    //ft.Commit();
                     FragmentManager.PopBackStack();
                     InputMethodManager inputManager = (InputMethodManager)Activity.GetSystemService(Context.InputMethodService);
                     var currentFocus = Activity.CurrentFocus;
@@ -91,6 +86,7 @@ namespace FieldInspection
 
 
                 }
+
             };
 
         }

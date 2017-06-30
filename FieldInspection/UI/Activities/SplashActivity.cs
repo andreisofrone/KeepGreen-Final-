@@ -22,7 +22,7 @@ namespace FieldInspection.UI
 		private void t_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{
 			_timer.Stop();
-			StartActivity(typeof(FieldSelectionActivity));
+			StartActivity(typeof(LoginActivity));
 			Finish();
 		}
 	}

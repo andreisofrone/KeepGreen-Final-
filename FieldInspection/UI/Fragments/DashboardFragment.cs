@@ -1,17 +1,16 @@
-﻿using System;
-using System.Linq;
-using Android.App;
+﻿using Android.App;
+using Android.Graphics;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using Android.Drm;
-using Android.Graphics;
+using System.Linq;
 
 namespace FieldInspection
 {
-	public class DashboardFragment : Fragment
+    public class DashboardFragment : Fragment
 	{
         //TODO -> leaga in API dashboard de cultura
 	    public Culture SelectedCulture { get; set; }

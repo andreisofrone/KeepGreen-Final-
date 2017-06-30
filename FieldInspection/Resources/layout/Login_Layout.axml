@@ -13,14 +13,14 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#fffafafa" />
     <EditText
-        android:inputType="textPersonName"
+        android:inputType="username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/username"
         android:layout_marginTop="100dp"
         android:hint="Username" />
     <EditText
-        android:inputType="textPassword"
+        android:inputType="password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/password"

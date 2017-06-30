@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.OS;
+using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
@@ -8,8 +9,6 @@ using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Android.Support.V4.Widget;
-using  System.Threading;
 namespace FieldInspection
 {
     public class InspectionsFragment : Fragment, IScrollDirectorListener
