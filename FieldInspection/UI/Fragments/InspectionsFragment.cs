@@ -8,14 +8,16 @@ using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Android.Support.V4.Widget;
+using  System.Threading;
 namespace FieldInspection
 {
     public class InspectionsFragment : Fragment, IScrollDirectorListener
     {
         public Culture SelectedCulture { get; set; }
         public Inspection[] Inspections { get; set; }
-
+        
+        SwipeRefreshLayout refresher;
         RecyclerView mRecyclerView;
         RecyclerView.LayoutManager mLayoutManager;
         PhotoAlbumAdapter mAdapter;
@@ -54,7 +56,8 @@ namespace FieldInspection
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
             var view = inflater.Inflate(Resource.Layout.Inspections_Layout, container, false);
             SelectedCulture = JsonConvert.DeserializeObject<Culture>(this.Activity.Intent.GetStringExtra("key"));
-          
+
+  
             mRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.recyclerView);
             mLayoutManager = new LinearLayoutManager(view.Context);
             mRecyclerView.HasFixedSize = true;
@@ -83,6 +86,30 @@ namespace FieldInspection
 
             return view;
 
+        }
+
+        public override void OnStart()
+        {
+            base.OnStart();
+            refresher = this.Activity.FindViewById<SwipeRefreshLayout>(Resource.Id.refresher);
+            refresher.SetColorScheme(Resource.Color.my_blue,
+                Resource.Color.my_purple,
+                Resource.Color.my_gray,
+                Resource.Color.green);
+            refresher.Refresh += HandleRefresh;
+        }
+
+        async void HandleRefresh(object sender, EventArgs e)
+        {
+            await Task.Run(() =>
+            {
+                var ftt = FragmentManager.BeginTransaction();
+                var inspp = new InspectionsFragment(ApiUitilities.GetInspections(SelectedCulture).ToArray());
+                ftt.Replace(Resource.Id.HomeFrameLayout, inspp);
+                ftt.Commit();
+            });
+
+            refresher.Refreshing = false;
         }
 
         public void OnScrollDown()
