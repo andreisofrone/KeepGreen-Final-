@@ -1,5 +1,7 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.OS;
+using Android.Views.InputMethods;
 using Android.Widget;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,10 +23,12 @@ namespace FieldInspection.UI
             {
                 if (string.IsNullOrWhiteSpace(username.Text))
                 {
+                    HideKeyboard();
                     username.Error = "Enter valid username";
                 }
                 else if (string.IsNullOrWhiteSpace(password.Text))
                 {
+                    HideKeyboard();
                     password.Error = "Enter valid password";
                 }
                 else
@@ -38,6 +42,7 @@ namespace FieldInspection.UI
                     {
                         await Task.Run(() =>
                         {
+                            HideKeyboard();
                             StartActivity(typeof(FieldSelectionActivity));
                             return true;
                         });
@@ -57,17 +62,29 @@ namespace FieldInspection.UI
 
                         if (username.Text != "admin")
                         {
+                            HideKeyboard();
                             progress.Dismiss();
                             Toast.MakeText(this, "Unknown user, please try again.", ToastLength.Long).Show();
                         }
                         else
                         {
+                            HideKeyboard();
                             progress.Dismiss();
                             Toast.MakeText(this, "Wrong password, please try again.", ToastLength.Long).Show();
                         }                       
                     }
                 }
             };
+        }
+
+        void HideKeyboard()
+        {
+            InputMethodManager inputManager = (InputMethodManager)GetSystemService(InputMethodService);
+            var currentFocus = CurrentFocus;
+            if (currentFocus != null)
+            {
+                inputManager.HideSoftInputFromWindow(currentFocus.WindowToken, HideSoftInputFlags.None);
+            }
         }
     }
 }

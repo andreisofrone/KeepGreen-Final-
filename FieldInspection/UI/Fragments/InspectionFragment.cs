@@ -62,14 +62,14 @@ namespace FieldInspection
             sendInspection.Click += async (sender, args) =>
             {
                 if (_imageView != null && inspDescription.Text != null)
-                {
-                    FragmentManager.PopBackStack();
+                {                  
                     InputMethodManager inputManager = (InputMethodManager)Activity.GetSystemService(Context.InputMethodService);
                     var currentFocus = Activity.CurrentFocus;
                     if (currentFocus != null)
                     {
                         inputManager.HideSoftInputFromWindow(currentFocus.WindowToken, HideSoftInputFlags.None);
                     }
+                    FragmentManager.PopBackStack();
                     var newInsp = new Inspection();
 
                     newInsp.Name = SelectedCulture.Name;
