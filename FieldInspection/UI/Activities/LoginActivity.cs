@@ -20,6 +20,7 @@ namespace FieldInspection.UI
             var username = FindViewById<EditText>(Resource.Id.username);
             var password = FindViewById<EditText>(Resource.Id.password);
 
+            // Hardcoded auth implemented only for testing purposes.
             loginButton.Click += async delegate
             {
                 if (string.IsNullOrWhiteSpace(username.Text))
