@@ -1,4 +1,7 @@
-﻿using Android.App;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Android.App;
 using Android.OS;
 using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
@@ -6,9 +9,7 @@ using Android.Views;
 using Android.Widget;
 using com.refractored.fab;
 using Newtonsoft.Json;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+
 namespace FieldInspection
 {
     public class InspectionsFragment : Fragment, IScrollDirectorListener
@@ -28,21 +29,24 @@ namespace FieldInspection
 
         async void OnItemClick(object sender, int position)
         {
-            ProgressDialog progress = new ProgressDialog(Activity, Android.App.AlertDialog.ThemeDeviceDefaultLight);
+            var progress = new ProgressDialog(Activity, AlertDialog.ThemeDeviceDefaultLight);
+
             progress.SetMessage("I'm getting data...");
             progress.SetTitle("Please wait");
             progress.Show();
 
             await Task.Run(() =>
             {
-                var inspections = ApiUitilities.GetInspections(SelectedCulture).ToArray();
+                var inspections = ApiUitilities.GetData<Inspection>("api/Cultures/Inspections/", $"{SelectedCulture.ID}").ToArray();
                 var ft = FragmentManager.BeginTransaction();
                 var inspecView = new InspectionViewFragment();
+
                 ft.AddToBackStack(null);
                 ft.Replace(Resource.Id.HomeFrameLayout, inspecView);
                 ft.Commit();
                 inspecView.Inspection = inspections[position];
-                    return true;
+
+                return true;
             });
             
             progress.Dismiss();
@@ -54,8 +58,8 @@ namespace FieldInspection
             // Use this to return your custom view for this Fragment
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
             var view = inflater.Inflate(Resource.Layout.Inspections_Layout, container, false);
-            SelectedCulture = JsonConvert.DeserializeObject<Culture>(this.Activity.Intent.GetStringExtra("key"));
 
+            SelectedCulture = JsonConvert.DeserializeObject<Culture>(this.Activity.Intent.GetStringExtra("key"));
   
             mRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.recyclerView);
             mLayoutManager = new LinearLayoutManager(view.Context);
@@ -69,15 +73,15 @@ namespace FieldInspection
             mAdapter.ItemClick += OnItemClick;
             mRecyclerView.SetAdapter(mAdapter);
 
-            
-
             var fab = view.FindViewById<FloatingActionButton>(Resource.Id.fab);
+
             fab.AttachToRecyclerView(mRecyclerView, this);
             fab.Size = FabSize.Mini;
             fab.Click += (sender, args) =>
             {
                 var ft = FragmentManager.BeginTransaction();
                 var addPres = new InspectionFragment();
+
                 ft.AddToBackStack(null);
                 ft.Replace(Resource.Id.HomeFrameLayout, addPres);
                 ft.Commit();
@@ -90,11 +94,13 @@ namespace FieldInspection
         public override void OnStart()
         {
             base.OnStart();
-            refresher = this.Activity.FindViewById<SwipeRefreshLayout>(Resource.Id.refresher);
+
+            refresher = Activity.FindViewById<SwipeRefreshLayout>(Resource.Id.refresher);
             refresher.SetColorScheme(Resource.Color.my_blue,
                 Resource.Color.my_purple,
                 Resource.Color.my_gray,
                 Resource.Color.green);
+            
             refresher.Refresh += HandleRefresh;
         }
 
@@ -103,7 +109,7 @@ namespace FieldInspection
             await Task.Run(() =>
             {
                 var ftt = FragmentManager.BeginTransaction();
-                var inspp = new InspectionsFragment(ApiUitilities.GetInspections(SelectedCulture).ToArray());
+                var inspp = new InspectionsFragment(ApiUitilities.GetData<Inspection>("api/Cultures/Inspections/", $"{SelectedCulture.ID}").ToArray());
                 ftt.Replace(Resource.Id.HomeFrameLayout, inspp);
                 ftt.Commit();
             });
@@ -121,6 +127,7 @@ namespace FieldInspection
             Console.WriteLine("RecyclerViewFragment: OnScrollUp");
         }
     }
+
     public class PhotoViewHolder : RecyclerView.ViewHolder
     {
         public ImageView Image { get; private set; }
@@ -192,8 +199,7 @@ namespace FieldInspection
         
         void OnClick(int position)
         {
-            if (ItemClick != null)
-                ItemClick(this, position);
+            ItemClick?.Invoke(this, position);
         }
     }
 }

@@ -1,41 +1,42 @@
 using System;
 using Android.Content;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Runtime;
 using Android.Support.V7.Widget;
-using Android.Graphics.Drawables;
-using Android.Graphics;
 
 namespace FieldInspection
 {
-	public class DividerItemDecoration : RecyclerView.ItemDecoration
+    public class DividerItemDecoration : RecyclerView.ItemDecoration
 	{
-		private int[] Attrs = new int[] { Android.Resource.Attribute.ListDivider };
+	    int[] Attrs = new int[] { Android.Resource.Attribute.ListDivider };
 
 		public const int HorizontalList = LinearLayoutManager.Horizontal;
 		public const int VerticalList = LinearLayoutManager.Vertical;
 
-		private Drawable divider;
-		private int orientation;
+	    Drawable divider;
+		int orientation;
 
 		public DividerItemDecoration(Context context, int orientation)
 		{
 			var a = context.ObtainStyledAttributes(Attrs);
+
 			divider = a.GetDrawable(0);
 			a.Recycle();
 			Orientation = orientation;
 		}
 
-		/// <summary>
-		/// Gets or sets orientation
-		/// </summary>
 		public int Orientation
 		{
 			get { return orientation; }
+
 			set
 			{
 				if (value != HorizontalList && value != VerticalList)
+                    
 					throw new ArgumentException("Invalid orientation", "orientation");
-				this.orientation = value;
+                
+				orientation = value;
 			}
 		}
 
@@ -44,14 +45,15 @@ namespace FieldInspection
 		{
 			var left = parent.PaddingLeft;
 			var right = parent.PaddingRight;
-
 			var childCount = parent.ChildCount;
+
 			for (int i = 0; i < childCount; i++)
 			{
 				var child = parent.GetChildAt(i);
 				var layoutParams = child.LayoutParameters.JavaCast<RecyclerView.MarginLayoutParams>();
 				var top = child.Bottom + layoutParams.BottomMargin;
 				var bottom = top + divider.IntrinsicHeight;
+
 				divider.SetBounds(left, top, right, bottom);
 				divider.Draw(c);
 			}
@@ -61,14 +63,15 @@ namespace FieldInspection
 		{
 			var top = parent.PaddingTop;
 			var bottom = parent.PaddingBottom;
-
 			var childCount = parent.ChildCount;
+
 			for (int i = 0; i < childCount; i++)
 			{
 				var child = parent.GetChildAt(i);
 				var layoutParams = child.LayoutParameters.JavaCast<RecyclerView.MarginLayoutParams>();
 				var left = child.Right + layoutParams.RightMargin;
 				var right = left + divider.IntrinsicHeight;
+
 				divider.SetBounds(left, top, right, bottom);
 				divider.Draw(c);
 			}
@@ -80,6 +83,7 @@ namespace FieldInspection
 			{
 				outRect.Set(0, 0, 0, divider.IntrinsicHeight);
 			}
+
 			else
 			{
 				outRect.Set(0, 0, divider.IntrinsicWidth, 0);

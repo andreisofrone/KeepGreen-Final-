@@ -26,13 +26,14 @@ namespace FieldInspection
 	        date.Text = "Date: " + Inspection.Date;
 	        auth.Text = "Author: AndreiS";
 	        description.Text = "Description: " + Inspection.Description;
-
 	    }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
-			View view = inflater.Inflate(Resource.Layout.View_Inspection, container, false);
+			var view = inflater.Inflate(Resource.Layout.View_Inspection, container, false);
+
             SetUpMap();
+
 			return view;
 		}
         
@@ -48,9 +49,11 @@ namespace FieldInspection
 		public void OnMapReady(GoogleMap googleMap)
 		{
             GMap = googleMap;
-			GMap.UiSettings.ZoomControlsEnabled = true;                                LatLng latlng = new LatLng(Inspection.LocationLatitude, Inspection.LocationLongitude);
-			CameraUpdate camera = CameraUpdateFactory.NewLatLngZoom(latlng, 15);
-			GMap.MoveCamera(camera);               MarkerOptions options = new MarkerOptions()
+			GMap.UiSettings.ZoomControlsEnabled = true;                                var latlng = new LatLng(Inspection.LocationLatitude, Inspection.LocationLongitude);
+			var camera = CameraUpdateFactory.NewLatLngZoom(latlng, 15);
+
+			GMap.MoveCamera(camera);
+             var options = new MarkerOptions()
 			.SetPosition(latlng)
 			.SetTitle("Chennai");
 

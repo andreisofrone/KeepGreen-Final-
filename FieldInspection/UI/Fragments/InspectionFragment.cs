@@ -1,19 +1,18 @@
-﻿using Android.App;
+﻿using System;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Provider;
 using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
 using Newtonsoft.Json;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Android.Views.InputMethods;
 
 namespace FieldInspection
 {
@@ -22,14 +21,15 @@ namespace FieldInspection
 
     public class InspectionFragment : Fragment
     {
-        private HttpClient client = new HttpClient();
+        HttpClient client = new HttpClient();
         public Culture SelectedCulture { get; set; }
-        private Position Position { get; set; }
+        Position Position { get; set; }
         ImageView _imageView;
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            View view = inflater.Inflate(Resource.Layout.Inspection_Layout, container, false);
+            var view = inflater.Inflate(Resource.Layout.Inspection_Layout, container, false);
+
             SelectedCulture = JsonConvert.DeserializeObject<Culture>(Activity.Intent.GetStringExtra("key"));
             return view;
         }
@@ -39,8 +39,9 @@ namespace FieldInspection
         {
             base.OnActivityResult(requestCode, resultCode, data);
 
-            Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
-            Uri contentUri = Uri.FromFile(App._file);
+            var mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
+            var contentUri = Uri.FromFile(App._file);
+
             mediaScanIntent.SetData(contentUri);
             Activity.SendBroadcast(mediaScanIntent);
 
@@ -48,10 +49,12 @@ namespace FieldInspection
 
             var height = _imageView.Height;
             var width = _imageView.Width;
-            App.bitmap = App._file.Path.LoadAndResizeBitmap(300, 200);
-            if (App.bitmap != null)
+
+            App._bitmap = App._file.Path.LoadAndResizeBitmap(300, 200);
+
+            if (App._bitmap != null)
             {
-                _imageView.SetImageBitmap(App.bitmap);
+                _imageView.SetImageBitmap(App._bitmap);
             }
 
             GC.Collect();
@@ -63,13 +66,16 @@ namespace FieldInspection
             {
                 if (_imageView != null && inspDescription.Text != null)
                 {                  
-                    InputMethodManager inputManager = (InputMethodManager)Activity.GetSystemService(Context.InputMethodService);
+                    var inputManager = (InputMethodManager)Activity.GetSystemService(Context.InputMethodService);
                     var currentFocus = Activity.CurrentFocus;
+
                     if (currentFocus != null)
                     {
                         inputManager.HideSoftInputFromWindow(currentFocus.WindowToken, HideSoftInputFlags.None);
                     }
+
                     FragmentManager.PopBackStack();
+
                     var newInsp = new Inspection();
 
                     newInsp.Name = SelectedCulture.Name;
@@ -80,22 +86,20 @@ namespace FieldInspection
                     newInsp.LocationLatitude = Position.Latitude;
                     newInsp.LocationLongitude = Position.Longitude;
                     newInsp.Date = DateTime.Now;
-                    newInsp.Image = Utilities.ConvertBitmapToByte(Utilities.BitmapResizer(App.bitmap));
+                    newInsp.Image = Utilities.ConvertBitmapToByte(Utilities.BitmapResizer(App._bitmap));
                     await SaveTodoItemAsync(newInsp, true);
-                    App.bitmap = null;
-
-
+                    App._bitmap = null;
                 }
-
             };
-
         }
 
-        private async Task GetLocationAsync()
+        async Task GetLocationAsync()
         {
             var locator = CrossGeolocator.Current;
+            var position = await locator.GetPositionAsync(10000);
+
             locator.DesiredAccuracy = 100; //100 is new default
-            var position = await locator.GetPositionAsync(timeoutMilliseconds: 10000);
+
             Position = position;
         }
 
@@ -103,24 +107,23 @@ namespace FieldInspection
         public async Task SaveTodoItemAsync(Inspection inspection, bool isNewItem = false)
         {
             var uri = new System.Uri("http://104.155.154.190/api/Inspections");
-
             var json = JsonConvert.SerializeObject(inspection);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = null;
+
             if (isNewItem)
             {
                 response = await client.PostAsync(uri, content);
             }
         }
 
-
         public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
+
             StartInspection();
         }
-
 
         void StartInspection()
         {
@@ -129,7 +132,9 @@ namespace FieldInspection
                 CreateDirectoryForPictures();
 
                 var button = View.FindViewById<Button>(Resource.Id.takePicture);
+
                 _imageView = View.FindViewById<ImageView>(Resource.Id.inspectionImage);
+
                 if (button != null && _imageView != null)
                 {
                     button.Click += TakeAPicture;
@@ -139,9 +144,8 @@ namespace FieldInspection
 
         void CreateDirectoryForPictures()
         {
-            App._dir = new Java.IO.File(
-                Environment.GetExternalStoragePublicDirectory(
-                    Environment.DirectoryPictures), "CameraAppDemo");
+            App._dir = new Java.IO.File(Environment.GetExternalStoragePublicDirectory(Environment.DirectoryPictures), "CameraAppDemo");
+            
             if (!App._dir.Exists())
             {
                 App._dir.Mkdirs();
@@ -151,8 +155,10 @@ namespace FieldInspection
 
         void TakeAPicture(object sender, EventArgs eventArgs)
         {
-            Intent intent = new Intent(MediaStore.ActionImageCapture);
+            var intent = new Intent(MediaStore.ActionImageCapture);
+
             App._file = new Java.IO.File(App._dir, String.Format("myPhoto_{0}.jpg", Guid.NewGuid()));
+
             intent.PutExtra(MediaStore.ExtraOutput, Uri.FromFile(App._file));
             StartActivityForResult(intent, 0);
         }
@@ -161,8 +167,8 @@ namespace FieldInspection
         bool IsThereAnAppToTakePictures()
         {
             var intent = new Intent(MediaStore.ActionImageCapture);
-            IList<ResolveInfo> availableActivities = Activity
-                .PackageManager.QueryIntentActivities(intent, PackageInfoFlags.MatchDefaultOnly);
+            var availableActivities = Activity.PackageManager.QueryIntentActivities(intent, PackageInfoFlags.MatchDefaultOnly);
+
             return availableActivities != null && availableActivities.Count > 0;
         }
     }

@@ -1,4 +1,6 @@
-﻿using Android.App;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
@@ -8,8 +10,6 @@ using Android.Support.V7.App;
 using Android.Views;
 using Java.IO;
 using Newtonsoft.Json;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FieldInspection
 {
@@ -17,7 +17,7 @@ namespace FieldInspection
     {
         public static File _file;
         public static File _dir;
-        public static Bitmap bitmap;
+        public static Bitmap _bitmap;
     }
 
     [Activity(Label = "FieldInspection", Theme = "@style/MyTheme.Base")]
@@ -27,15 +27,18 @@ namespace FieldInspection
         public Culture SelectedCulture { get; set; }
 
         DrawerLayout _drawerLayout;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             SetContentView(Resource.Layout.Main);
+
             base.OnCreate(savedInstanceState);
 
             _drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 
             // Init toolbar
             var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.App_Bar);
+
             SetSupportActionBar(toolbar);
             SupportActionBar.SetTitle(Resource.String.app_name);
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
@@ -61,6 +64,7 @@ namespace FieldInspection
             SelectedCulture = JsonConvert.DeserializeObject<Culture>(Intent.GetStringExtra("key"));
 
             var navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
+
             navigationView.NavigationItemSelected += NavigationView_NavigationItemSelected;
             // Attach item selected handler to navigation view
 
@@ -70,13 +74,15 @@ namespace FieldInspection
         protected override void OnResume()
         {
             SupportActionBar.SetTitle(Resource.String.app_name);
+
             base.OnResume();
         }
 
         //define action for navigation menu selection
         async void NavigationView_NavigationItemSelected(object sender, NavigationView.NavigationItemSelectedEventArgs e)
         {
-            ProgressDialog progress = new ProgressDialog(this, Android.App.AlertDialog.ThemeDeviceDefaultLight);
+            var progress = new ProgressDialog(this, Android.App.AlertDialog.ThemeDeviceDefaultLight);
+
             progress.SetMessage("I'm getting data...");
             progress.SetTitle("Please wait");
             progress.Show();
@@ -89,6 +95,7 @@ namespace FieldInspection
 
                         var ft = FragmentManager.BeginTransaction();
                         var home = new DashboardFragment();
+
                         ft.Replace(Resource.Id.HomeFrameLayout, home);
                         ft.Commit();
                         
@@ -97,9 +104,11 @@ namespace FieldInspection
                     case (Resource.Id.nav_inspection):
 
                         var ftt = FragmentManager.BeginTransaction();
-                        var inspp = new InspectionsFragment(ApiUitilities.GetInspections(SelectedCulture).ToArray());
+                        var inspp = new InspectionsFragment(ApiUitilities.GetData<Inspection>("api/Cultures/Inspections/", $"{SelectedCulture.ID}").ToArray());
+
                         ftt.Replace(Resource.Id.HomeFrameLayout, inspp);
                         ftt.Commit();
+
                         break;
 
                 }
@@ -117,6 +126,7 @@ namespace FieldInspection
             {
                 case Android.Resource.Id.Home:
                     return true;
+
                 default:
                     return base.OnOptionsItemSelected(item);
             }
@@ -130,6 +140,7 @@ namespace FieldInspection
             {
                 FragmentManager.PopBackStack();
             }
+
             else
             {
                 base.OnBackPressed();

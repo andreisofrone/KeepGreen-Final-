@@ -1,53 +1,56 @@
-﻿using Android.App;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Android.App;
 using Android.Graphics;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace FieldInspection
 {
     public class DashboardFragment : Fragment
 	{
-        //TODO -> leaga in API dashboard de cultura
 	    public Culture SelectedCulture { get; set; }
 
 	    public IEnumerable<Dashboard> DashboardValues { get; set; }
 
 	    public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
-			View view = inflater.Inflate(Resource.Layout.Dashboard_Layout, container, false);
+			var view = inflater.Inflate(Resource.Layout.Dashboard_Layout, container, false);
+
 		    SelectedCulture = JsonConvert.DeserializeObject<Culture>(this.Activity.Intent.GetStringExtra("key"));
+
             return view;
 		}
 
 		public override void OnStart()
 		{
 			base.OnStart();
+
 		    SetDashboardValues();
 			SetBtns();
 		}
 
 	    void CheckValues(string alertMessage)
 	    {
-	        AlertDialog.Builder alert = new AlertDialog.Builder(Activity);
+	        var alert = new AlertDialog.Builder(Activity);
+
 	        alert.SetTitle("Warning");
-	        alert.SetMessage(alertMessage);
-            
+	        alert.SetMessage(alertMessage);   
 	        alert.SetPositiveButton("Ok", (senderAlert, args) => {	           
 	        });
 
-	        Dialog dialog = alert.Create();
+	        var dialog = alert.Create();
+
 	        dialog.Show();
         }
 
 
         void SetDashboardValues()
 	    {
-	        DashboardValues = ApiUitilities.GetDashboardValues();
+            DashboardValues = ApiUitilities.GetData<Dashboard>("api/Dashboard");
 	        var windSpeed = Activity.FindViewById<TextView>(Resource.Id.WindSpeedVal);
 	        var temperature = Activity.FindViewById<TextView>(Resource.Id.TempValue);
 	        var pressure = Activity.FindViewById<TextView>(Resource.Id.PressureValue);
@@ -69,6 +72,7 @@ namespace FieldInspection
                 windSpeed.SetBackgroundColor(Color.Red);
                 windSpeed.SetTextColor(Color.Black);
 	        }
+
 	        if (tempVal > 35)
 	        {
 	            CheckValues("Temperture is too high !");
@@ -102,6 +106,7 @@ namespace FieldInspection
 	    void SetBtns() 
 		{ 
 			var pressBtn = Activity.FindViewById<Button>(Resource.Id.pressBtn);
+
 			pressBtn.Click += delegate
 			{
 				var ft = FragmentManager.BeginTransaction();
@@ -113,33 +118,38 @@ namespace FieldInspection
 			};
 
 			var humBtn = Activity.FindViewById<Button>(Resource.Id.humBtn);
-			humBtn.Click += delegate
-			{
-				var ft = FragmentManager.BeginTransaction();
-				var humPres = new HumidityFragment(Convert.ToInt32(DashboardValues.FirstOrDefault(result => result.ID == SelectedCulture.ID).Humidity));
-				ft.AddToBackStack(null);
-				ft.Replace(Resource.Id.HomeFrameLayout, humPres);
-				ft.Commit();
 
-			};
+			humBtn.Click += delegate
+            			{
+            				var ft = FragmentManager.BeginTransaction();
+            				var humPres = new HumidityFragment(Convert.ToInt32(DashboardValues.FirstOrDefault(result => result.ID == SelectedCulture.ID).Humidity));
+
+            				ft.AddToBackStack(null);
+            				ft.Replace(Resource.Id.HomeFrameLayout, humPres);
+            				ft.Commit();
+
+            			};
 
 			var windSpeedbtn = Activity.FindViewById<Button>(Resource.Id.WindSpeedBtn);
+
 			windSpeedbtn.Click += delegate
 						{
 							var ft = FragmentManager.BeginTransaction();
-				var windSpeed = new WindSpeedFragment(Convert.ToInt32(DashboardValues.FirstOrDefault(result => result.ID == SelectedCulture.ID).WindSpeed));
-			ft.AddToBackStack(null);
+			                var windSpeed = new WindSpeedFragment(Convert.ToInt32(DashboardValues.FirstOrDefault(result => result.ID == SelectedCulture.ID).WindSpeed));
+
+                			ft.AddToBackStack(null);
 							ft.Replace(Resource.Id.HomeFrameLayout, windSpeed);
 							ft.Commit();
-
 						};
 
 			var tempBtn = Activity.FindViewById<Button>(Resource.Id.TempBtn);
+
 			tempBtn.Click += delegate
 						{
 							var ft = FragmentManager.BeginTransaction();
-				var temperature = new TemperatureFragment(Convert.ToInt32(DashboardValues.FirstOrDefault(result => result.ID == SelectedCulture.ID).Temperature));
-			ft.AddToBackStack(null);
+				            var temperature = new TemperatureFragment(Convert.ToInt32(DashboardValues.FirstOrDefault(result => result.ID == SelectedCulture.ID).Temperature));
+
+			                ft.AddToBackStack(null);
 							ft.Replace(Resource.Id.HomeFrameLayout, temperature);
 							ft.Commit();
 

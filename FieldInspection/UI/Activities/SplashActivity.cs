@@ -6,12 +6,12 @@ namespace FieldInspection.UI
     [Activity(Theme = "@style/Theme.Splash", MainLauncher = true, Icon = "@drawable/icon")]
 	public class SplashActivity : Activity
 	{
-		private System.Timers.Timer _timer;
+	    System.Timers.Timer _timer;
 
 		protected override void OnCreate(Bundle bundle)
 		{
-
 			base.OnCreate(bundle);
+
 			SetContentView(Resource.Layout.Splash_Layout);
 			_timer = new System.Timers.Timer();
 			_timer.Interval = 3500;
@@ -19,7 +19,7 @@ namespace FieldInspection.UI
 			_timer.Start();
 		}
 
-		private void t_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+		void t_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{
 			_timer.Stop();
 			StartActivity(typeof(LoginActivity));

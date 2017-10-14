@@ -1,10 +1,9 @@
-﻿using Android.App;
-using Android.Content;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Android.App;
 using Android.OS;
 using Android.Views.InputMethods;
 using Android.Widget;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace FieldInspection.UI
 {
@@ -14,7 +13,9 @@ namespace FieldInspection.UI
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
             SetContentView(Resource.Layout.Login_Layout);
+
             var loginButton = FindViewById<Button>(Resource.Id.LoginButton);
             var username = FindViewById<EditText>(Resource.Id.username);
             var password = FindViewById<EditText>(Resource.Id.password);
@@ -26,14 +27,16 @@ namespace FieldInspection.UI
                     HideKeyboard();
                     username.Error = "Enter valid username";
                 }
+
                 else if (string.IsNullOrWhiteSpace(password.Text))
                 {
                     HideKeyboard();
                     password.Error = "Enter valid password";
                 }
+
                 else
                 {
-                    ProgressDialog progress = new ProgressDialog(this, AlertDialog.ThemeDeviceDefaultLight);
+                    var progress = new ProgressDialog(this, AlertDialog.ThemeDeviceDefaultLight);
                     progress.SetMessage("Authenticating..");
                     progress.SetTitle("Please wait");
                     progress.Show();
@@ -66,6 +69,7 @@ namespace FieldInspection.UI
                             progress.Dismiss();
                             Toast.MakeText(this, "Unknown user, please try again.", ToastLength.Long).Show();
                         }
+
                         else
                         {
                             HideKeyboard();
@@ -79,8 +83,9 @@ namespace FieldInspection.UI
 
         void HideKeyboard()
         {
-            InputMethodManager inputManager = (InputMethodManager)GetSystemService(InputMethodService);
+            var inputManager = (InputMethodManager)GetSystemService(InputMethodService);
             var currentFocus = CurrentFocus;
+
             if (currentFocus != null)
             {
                 inputManager.HideSoftInputFromWindow(currentFocus.WindowToken, HideSoftInputFlags.None);

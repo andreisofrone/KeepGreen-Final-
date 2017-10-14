@@ -7,7 +7,6 @@ using Plugin.CurrentActivity;
 
 namespace FieldInspection
 {
-	//You can specify additional application information in this attribute
     [Application]
     public class MainApplication : Application, Application.IActivityLifecycleCallbacks
     {
