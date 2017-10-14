@@ -29,9 +29,13 @@ namespace FieldInspection.UI
 
             var startBtn = FindViewById<Button>(Resource.Id.startBtn);
 
-            Cultures = ApiUitilities.GetData<Culture>("api/Cultures");
-            Cultures.ToList().ForEach(culture => { cultureNames.Add(culture.Name); });
-            startBtn.Click += BtnStart_ClickAsync;
+           // API UNAVAILABLE FOR NOW !!!
+
+                //Cultures = ApiUitilities.GetData<Culture>("api/Cultures");
+                //Cultures.ToList().ForEach(culture => { cultureNames.Add(culture.Name); });
+                //startBtn.Click += BtnStart_ClickAsync;
+        
+             cultureNames.Add("KeepGreen API unavailable");
             _adapter = new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleSpinnerItem, cultureNames);
             _adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             InitSpinnerMultiline();
